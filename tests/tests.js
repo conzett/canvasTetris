@@ -22,7 +22,7 @@ $(document).ready(function(){
 	
 	test("Test piece rotate right", function() {
 		var testPiece = new piece([[true, false], [false, true]]);
-		testPiece.rotateRight();
+		testPiece.rotate('cw');
 		equals(testPiece.structure[0][0], false, "We expect this location to be false" );
 		equals(testPiece.structure[0][1], true, "We expect this location to be true" );
 		equals(testPiece.structure[1][0], true, "We expect this location to be true" );
@@ -31,14 +31,14 @@ $(document).ready(function(){
 	
 	test("Test piece rotate right - more complicated", function() {
 		var testPiece = new piece([[0,0,1], [0,0,0], [6,0,0]]);
-		testPiece.rotateRight();
+		testPiece.rotate('cw');
 		equals(testPiece.structure[0][0], 6, "We expect this location to be 6" );
 		equals(testPiece.structure[2][2], 1, "We expect this location to be 1" );		
 	});
 	
 	test("Test piece rotate left- more complicated", function() {
 		var testPiece = new piece([[0,0,1], [0,0,0], [6,0,0]]);
-		testPiece.rotateLeft();
+		testPiece.rotate('ccw');
 		equals(testPiece.structure[0][0], 1, "We expect this location to be 6" );
 		equals(testPiece.structure[2][2], 6, "We expect this location to be 1" );		
 	});
