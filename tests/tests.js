@@ -7,8 +7,19 @@ $(document).ready(function(){
 	});	
 
 	test("Test level array creation", function() {
-		var testLevel = new level(6,6)		
+		var testLevel = new level(6,6);	
 		equals(testLevel.structure[5][5], undefined, "We expect the array location to exist, undefined" );		
+	});
+	
+	test("Test createPiece() method", function() {
+		
+		function oneOrZero(val){
+			if(val <= 1){ return true; }
+			return false;
+		}
+		
+		var testPiece = this.level.createPiece()
+		ok(oneOrZero(testPiece.structure[1][1]), "We expect the random piece to be at least this large" );		
 	});
 	
 	module("Piece Module", {
