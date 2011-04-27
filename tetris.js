@@ -1,6 +1,43 @@
 var level = function(width, height){
 	
 	this.structure = new Array(height);
+	this.pieces = [
+		new piece(
+		       [[0,0,1,0],
+			[0,0,1,0],
+			[0,0,1,0],
+			[0,0,1,0]]
+		),
+		new piece(
+		       [[0,0,0],
+			[0,1,1],
+			[1,1,0]]
+		),
+		new piece(
+		       [[0,0,0],
+			[1,1,0],
+			[0,1,1]]
+		),
+		new piece(
+		       [[0,0,0],
+			[0,1,0],
+			[1,1,1]]
+		),
+		new piece(
+		       [[0,0,0],
+			[1,0,0],
+			[1,1,1]]
+		),
+		new piece(
+		       [[0,0,0],
+			[0,0,1],
+			[1,1,1]]
+		),
+		new piece(
+		       [[1,1],
+			[1,1]]
+		)
+	];
 	
 	var i;
 	for (i = 0; i < this.structure.length; ++i){
@@ -9,6 +46,9 @@ var level = function(width, height){
 }
 
 var piece = function(structure, top, left){
+	
+	// structure should be a multidimensional
+	// array of equal height and width
 	
 	this.structure = structure || [[true]];
 	this.top = top || 0;
