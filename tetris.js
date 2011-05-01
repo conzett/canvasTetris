@@ -95,19 +95,39 @@ var game = function(canvas, level, score, time){
 		switch (event.keyCode) {
 			case 37:
 				//left
+				that.level.active.left -= 10;
 				break;
 			case 38:
 				//up
+				that.level.active.rotate('cw');
 				break;
 			case 39:
 				//right
+				that.level.active.left += 10;
 				break;
 			case 40:
 				//down
+				that.level.active.top += 10;
 				break;
 		}
 		
 	}, false );
+	
+	this.drawActive = function(){		
+		
+		var i, j;
+		for (i = 0; i < that.level.active.structure.length; ++i){
+			for (j = 0; j < that.level.active.structure[i].length; ++j){
+				if(that.level.active.structure[i][j] === 1){
+					context.fillRect(
+						i * 10 + that.level.active.left,
+						j * 10 + that.level.active.top,
+						10, 10
+					);
+				}
+			}
+		}	
+	}
 	
 	this.fpsLoop = function(){
 		document.getElementById('fps').innerHTML = that.fps;
@@ -115,12 +135,19 @@ var game = function(canvas, level, score, time){
 		setTimeout ( that.fpsLoop, 1000);
 	}
 	
+	this.dropLoop = function(){
+		that.level.active.top += 10;
+		setTimeout ( that.dropLoop, 1000);
+	}
+	
 	this.renderLoop = function(){
 	
 		context.clearRect(0, 0, that.level.structure[0].length, that.level.structure.length);
+		context.fillStyle = "rgb(0, 31, 0)";
+		that.drawActive();
 		if( that.status !== "stop" ){
 			that.fps ++;
-			setTimeout ( that.renderLoop, 10);
+			setTimeout ( that.renderLoop, 40);
 		}
 	}
 	
@@ -128,6 +155,7 @@ var game = function(canvas, level, score, time){
 		var context = this.canvas.getContext('2d');
 		this.fpsLoop();
 		this.renderLoop();
+		this.dropLoop();
 	} else {
 		alert("Canvas Not Supported");
 	}
