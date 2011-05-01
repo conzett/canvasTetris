@@ -74,4 +74,56 @@ var level = function(width, height){
 	this.createPiece = function(){
 		return this.pieces[Math.floor(Math.random()*this.pieces.length)];	
 	}
+	
+	this.active = this.createPiece();
 }
+
+var game = function(canvas, level, score, time){
+	
+	this.canvas = canvas || document.getElementById('level');
+	this.level = level || new level();
+	this.canvas.width = this.level.structure[0][0].length;
+	this.canvas.height = this.level.structure[0].length;
+	this.score = score || 0;
+	this.time = time || 100;
+	this.status = "play";
+	var that = this;
+	
+	this.level.createFood(5, 8);
+	
+	window.addEventListener('keydown', function(event) {
+		
+		switch (event.keyCode) {
+			case 37:
+				//left
+				break;
+			case 38:
+				//up
+				break;
+			case 39:
+				//right
+				break;
+			case 40:
+				//down
+				break;
+		}
+		
+	}, false );
+	
+	this.renderLoop = function(){
+	
+		context.clearRect(0, 0, that.level.structure[0][0].length, that.level.structure[0].length);
+		if( that.status !== "stop" ){			
+			setTimeout ( that.renderLoop, 100);
+		}
+	}
+	
+	if (this.canvas.getContext) {
+		var context = this.canvas.getContext('2d');
+		this.renderLoop();
+	} else {
+		alert("Canvas Not Supported");
+	}
+}
+
+var game = new game();
