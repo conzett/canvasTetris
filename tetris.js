@@ -81,15 +81,13 @@ var level = function(width, height){
 var game = function(canvas, level, score, time){
 	
 	this.canvas = canvas || document.getElementById('level');
-	this.level = level || new level();
-	this.canvas.width = this.level.structure[0][0].length;
-	this.canvas.height = this.level.structure[0].length;
+	this.level = level || new level(300, 500);
+	this.canvas.width = this.level.structure[0].length;
+	this.canvas.height = this.level.structure.length;
 	this.score = score || 0;
 	this.time = time || 100;
 	this.status = "play";
 	var that = this;
-	
-	this.level.createFood(5, 8);
 	
 	window.addEventListener('keydown', function(event) {
 		
@@ -112,7 +110,7 @@ var game = function(canvas, level, score, time){
 	
 	this.renderLoop = function(){
 	
-		context.clearRect(0, 0, that.level.structure[0][0].length, that.level.structure[0].length);
+		context.clearRect(0, 0, that.level.structure[0].length, that.level.structure.length);
 		if( that.status !== "stop" ){			
 			setTimeout ( that.renderLoop, 100);
 		}
@@ -126,4 +124,6 @@ var game = function(canvas, level, score, time){
 	}
 }
 
-var game = new game();
+var x = new level(300, 500);
+
+var game = new game(null, x);
