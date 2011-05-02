@@ -88,6 +88,7 @@ var game = function(canvas, level, score, time){
 	this.time = time || 100;
 	this.status = "play";
 	this.fps = 0;
+	this.increment = 20;
 	var that = this;
 	
 	window.addEventListener('keydown', function(event) {
@@ -95,7 +96,7 @@ var game = function(canvas, level, score, time){
 		switch (event.keyCode) {
 			case 37:
 				//left
-				that.level.active.left -= 10;
+				that.level.active.left -= that.increment
 				break;
 			case 38:
 				//up
@@ -103,26 +104,25 @@ var game = function(canvas, level, score, time){
 				break;
 			case 39:
 				//right
-				that.level.active.left += 10;
+				that.level.active.left += that.increment;
 				break;
 			case 40:
 				//down
-				that.level.active.top += 10;
+				that.level.active.top += increment;
 				break;
 		}
 		
 	}, false );
 	
 	this.drawActive = function(){		
-		
-		var i, j;
+		var i, j, x = that.increment
 		for (i = 0; i < that.level.active.structure.length; ++i){
 			for (j = 0; j < that.level.active.structure[i].length; ++j){
 				if(that.level.active.structure[i][j] === 1){
 					context.fillRect(
-						i * 10 + that.level.active.left,
-						j * 10 + that.level.active.top,
-						10, 10
+						i * x + that.level.active.left,
+						j * x + that.level.active.top,
+						x, x
 					);
 				}
 			}
@@ -136,7 +136,7 @@ var game = function(canvas, level, score, time){
 	}
 	
 	this.dropLoop = function(){
-		that.level.active.top += 10;
+		that.level.active.top += that.increment;
 		setTimeout ( that.dropLoop, 1000);
 	}
 	
