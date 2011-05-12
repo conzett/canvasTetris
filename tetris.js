@@ -108,7 +108,7 @@ var game = function(canvas, level, score, time){
 				break;
 			case 40:
 				//down
-				that.level.active.top += increment;
+				that.level.active.top += that.increment;
 				break;
 		}
 		
