@@ -120,8 +120,8 @@ var game = function(canvas, level, score, time){
 			for (j = 0; j < that.level.active.structure[i].length; ++j){
 				if(that.level.active.structure[i][j] === 1){
 					context.fillRect(
-						i * x + that.level.active.left,
-						j * x + that.level.active.top,
+						j * x + that.level.active.left,
+						i * x + that.level.active.top,
 						x, x
 					);
 				}
