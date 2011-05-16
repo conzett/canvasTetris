@@ -16,7 +16,7 @@ var piece = function(structure, color, top, left){
 			temp[i] = new Array(temp.length);
 			for (j = 0; j < temp.length; ++j){
 				if(direction === 'ccw'){
-					temp[i][j] = this.structure[i][temp.length - j - 1];
+					temp[i][j] = this.structure[j][temp.length - i - 1];
 				}else if(direction === 'cw'){
 					temp[i][j] = this.structure[temp.length - j - 1][i];
 				}				
