@@ -1,4 +1,4 @@
-var piece = function(structure, top, left){
+var piece = function(structure, color, top, left){
 	
 	// structure should be a multidimensional
 	// array of equal height and width
@@ -6,6 +6,7 @@ var piece = function(structure, top, left){
 	this.structure = structure || [[true]];
 	this.top = top || 0;
 	this.left = left || 0;
+	this.color = color || '#000000';
 	
 	this.rotate = function(direction){
 		
@@ -33,36 +34,43 @@ var level = function(width, height){
 		       [[0,0,1,0],
 			[0,0,1,0],
 			[0,0,1,0],
-			[0,0,1,0]]
+			[0,0,1,0]],
+		       '#8FEBE9'
 		),
 		new piece(
 		       [[0,0,0],
 			[0,1,1],
-			[1,1,0]]
+			[1,1,0]],
+		       '#3ED936'
 		),
 		new piece(
 		       [[0,0,0],
 			[1,1,0],
-			[0,1,1]]
+			[0,1,1]],
+		       '#F23E22'
 		),
 		new piece(
 		       [[1,1,1],
 			[0,1,0],
-			[0,0,0]]
+			[0,0,0]],
+		       '#B21DCC'
 		),
 		new piece(
 		       [[0,1,0],
 			[0,1,0],
-			[1,1,0]]
+			[1,1,0]],
+		       '#194CC2'
 		),
 		new piece(
 		       [[0,1,0],
 			[0,1,0],
-			[0,1,1]]
+			[0,1,1]],
+		       '#F2B022'
 		),
 		new piece(
 		       [[1,1],
-			[1,1]]
+			[1,1]],
+		       '#F2ED50'
 		)
 	];
 	
@@ -115,7 +123,10 @@ var game = function(canvas, level, score, time){
 	}, false );
 	
 	this.drawActive = function(){		
-		var i, j, x = that.increment
+		var i, j, x = that.increment;
+		
+		context.fillStyle = that.level.active.color;
+		
 		for (i = 0; i < that.level.active.structure.length; ++i){
 			for (j = 0; j < that.level.active.structure[i].length; ++j){
 				if(that.level.active.structure[i][j] === 1){
