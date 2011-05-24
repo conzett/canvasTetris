@@ -18,14 +18,24 @@ $(document).ready(function(){
 			return false;
 		}
 		
-		var testPiece = this.level.createPiece()
+		var testPiece = this.level.createPiece();
 		ok(oneOrZero(testPiece.structure[1][1]), "We expect the random piece to be at least this large" );		
 	});
 	
-	test("Test checkLevelBounds() method", function() {		
+	test("Test checkInBounds() method", function() {		
 		
-		var testPiece = this.level.createPiece()
-		ok(oneOrZero(testPiece.structure[1][1]), "We expect the random piece to be at least this large" );		
+		var testLevel = new level(6,6, new piece());
+		testLevel.active.left = -1;
+		equals(testLevel.checkInBounds(), false, "-1 unit to the left, we expect the value to be false");
+		
+		testLevel.active.left = 0;
+		testLevel.active.top = 7;
+		equals(testLevel.checkInBounds(), false, "+1 unit more than the height expect the value to be false");
+		
+		testLevel.active.left = 7;
+		testLevel.active.top = 0;
+		equals(testLevel.checkInBounds(), false, "+1 unit more than the left expect the value to be false");
+		
 	});
 	
 	module("Piece Module", {

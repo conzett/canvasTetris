@@ -3,7 +3,7 @@ var piece = function(structure, color, top, left){
 	// structure should be a multidimensional
 	// array of equal height and width
 	
-	this.structure = structure || [[true]];
+	this.structure = structure || [[1]];
 	this.top = top || 0;
 	this.left = left || 0;
 	this.color = color || '#000000';
@@ -26,9 +26,10 @@ var piece = function(structure, color, top, left){
 	}
 }
 
-var level = function(width, height, piece){
+var level = function(width, height, _piece){
 	
-	this.structure = new Array(height);
+	this.structure = new Array(height);	
+	
 	this.pieces = [
 		new piece(
 		       [[0,0,1,0],
@@ -84,24 +85,33 @@ var level = function(width, height, piece){
 		return this.pieces[Math.floor(Math.random()*this.pieces.length)];	
 	}
 	
-	this.checkLevelBounds = function(){
-		
+	this.active = _piece || this.createPiece();
+	
+	this.checkInBounds = function(){
+		if(this.active.left < 0){
+			return false;
+		}else if(this.active.top > this.structure.length){
+			return false;
+		}else if(this.active.left > this.structure[0].length){
+			return false;
+		}
+		return undefined;
 	}
 	
-	this.active = piece || this.createPiece();
+	
 }
 
 var game = function(canvas, level, score, time){
 	
 	this.canvas = canvas || document.getElementById('level');
-	this.level = level || new level(300, 500);
-	this.canvas.width = this.level.structure[0].length;
-	this.canvas.height = this.level.structure.length;
+	this.level = level || new level(8, 16);
 	this.score = score || 0;
 	this.time = time || 100;
 	this.status = "play";
 	this.fps = 0;
 	this.increment = 20;
+	this.canvas.width = this.level.structure[0].length * this.increment;
+	this.canvas.height = this.level.structure.length * this.increment;
 	var that = this;
 	
 	window.addEventListener('keydown', function(event) {
@@ -109,7 +119,7 @@ var game = function(canvas, level, score, time){
 		switch (event.keyCode) {
 			case 37:
 				//left
-				that.level.active.left -= that.increment
+				that.level.active.left -= 1
 				break;
 			case 38:
 				//up
@@ -117,11 +127,11 @@ var game = function(canvas, level, score, time){
 				break;
 			case 39:
 				//right
-				that.level.active.left += that.increment;
+				that.level.active.left += 1;
 				break;
 			case 40:
 				//down
-				that.level.active.top += that.increment;
+				that.level.active.top += 1;
 				break;
 		}
 		
@@ -136,8 +146,8 @@ var game = function(canvas, level, score, time){
 			for (j = 0; j < that.level.active.structure[i].length; ++j){
 				if(that.level.active.structure[i][j] === 1){
 					context.fillRect(
-						j * x + that.level.active.left,
-						i * x + that.level.active.top,
+						(j + that.level.active.left) * x,
+						(i + that.level.active.top) * x,
 						x, x
 					);
 				}
@@ -152,13 +162,13 @@ var game = function(canvas, level, score, time){
 	}
 	
 	this.dropLoop = function(){
-		that.level.active.top += that.increment;
+		that.level.active.top++;
 		setTimeout ( that.dropLoop, 1000);
 	}
 	
 	this.renderLoop = function(){
 	
-		context.clearRect(0, 0, that.level.structure[0].length, that.level.structure.length);
+		context.clearRect(0, 0, that.level.structure[0].length * that.increment, that.level.structure.length * that.increment);
 		context.fillStyle = "rgb(0, 31, 0)";
 		that.drawActive();
 		if( that.status !== "stop" ){
@@ -177,6 +187,6 @@ var game = function(canvas, level, score, time){
 	}
 }
 
-var x = new level(300, 500);
+var x = new level(8, 16);
 
 var game = new game(null, x);
