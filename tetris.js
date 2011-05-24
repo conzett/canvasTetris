@@ -26,7 +26,7 @@ var piece = function(structure, color, top, left){
 	}
 }
 
-var level = function(width, height){
+var level = function(width, height, piece){
 	
 	this.structure = new Array(height);
 	this.pieces = [
@@ -88,7 +88,7 @@ var level = function(width, height){
 		
 	}
 	
-	this.active = this.createPiece();
+	this.active = piece || this.createPiece();
 }
 
 var game = function(canvas, level, score, time){
