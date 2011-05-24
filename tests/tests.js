@@ -22,6 +22,12 @@ $(document).ready(function(){
 		ok(oneOrZero(testPiece.structure[1][1]), "We expect the random piece to be at least this large" );		
 	});
 	
+	test("Test checkLevelBounds() method", function() {		
+		
+		var testPiece = this.level.createPiece()
+		ok(oneOrZero(testPiece.structure[1][1]), "We expect the random piece to be at least this large" );		
+	});
+	
 	module("Piece Module", {
 
 	});	

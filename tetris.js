@@ -75,12 +75,17 @@ var level = function(width, height){
 	];
 	
 	var i;
+	
 	for (i = 0; i < this.structure.length; ++i){
 		this.structure[i] = new Array(width);
 	}
 	
 	this.createPiece = function(){
 		return this.pieces[Math.floor(Math.random()*this.pieces.length)];	
+	}
+	
+	this.checkLevelBounds = function(){
+		
 	}
 	
 	this.active = this.createPiece();
