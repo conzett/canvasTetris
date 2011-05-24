@@ -22,19 +22,38 @@ $(document).ready(function(){
 		ok(oneOrZero(testPiece.structure[1][1]), "We expect the random piece to be at least this large" );		
 	});
 	
-	test("Test checkInBounds() method", function() {		
+	test("Test checkInBoundsLeft() method", function() {		
 		
 		var testLevel = new level(6,6, new piece());
-		testLevel.active.left = -1;
-		equals(testLevel.checkInBounds(), false, "-1 unit to the left, we expect the value to be false");
+		testLevel.active.left = 0;
+		equals(testLevel.checkInBoundsLeft(), false, "0 units to the left, we expect the value to be false");
+		
+		testLevel.active.left = 1;
+		equals(testLevel.checkInBoundsLeft(), true, "1 units to the left, we expect the value to be true");
+		
+	});
+	
+	test("Test checkInBoundsRight() method", function() {		
+		
+		var testLevel = new level(6,6, new piece());
+		testLevel.active.left = 6;
+		equals(testLevel.checkInBoundsRight(), false, "6 units to the left, we expect the value to be false");
+		
+		testLevel.active.left = 5;
+		equals(testLevel.checkInBoundsRight(), true, "5 units to the left, we expect the value to be true");
+		
+	});
+	
+	test("Test checkInBoundsBottom() method", function() {		
+		
+		var testLevel = new level(6,6, new piece());
 		
 		testLevel.active.left = 0;
-		testLevel.active.top = 7;
-		equals(testLevel.checkInBounds(), false, "+1 unit more than the height expect the value to be false");
+		testLevel.active.top = 6;
+		equals(testLevel.checkInBoundsBottom(), false, "6 units from the top, expect the value to be false");
 		
-		testLevel.active.left = 7;
-		testLevel.active.top = 0;
-		equals(testLevel.checkInBounds(), false, "+1 unit more than the left expect the value to be false");
+		testLevel.active.top = 5;
+		equals(testLevel.checkInBoundsBottom(), true, "5 units from the top, expect the value to be true");
 		
 	});
 	

@@ -87,18 +87,26 @@ var level = function(width, height, _piece){
 	
 	this.active = _piece || this.createPiece();
 	
-	this.checkInBounds = function(){
-		if(this.active.left < 0){
-			return false;
-		}else if(this.active.top > this.structure.length){
-			return false;
-		}else if(this.active.left > this.structure[0].length){
+	this.checkInBoundsLeft = function(){		
+		if(this.active.left <= 0){
 			return false;
 		}
-		return undefined;
+		return true;
 	}
 	
+	this.checkInBoundsRight = function(){		
+		if(this.active.left >= this.structure[0].length){
+			return false;
+		}
+		return true;
+	}
 	
+	this.checkInBoundsBottom = function(){		
+		if(this.active.top >= this.structure.length){
+			return false;
+		}
+		return true;
+	}
 }
 
 var game = function(canvas, level, score, time){
@@ -119,7 +127,7 @@ var game = function(canvas, level, score, time){
 		switch (event.keyCode) {
 			case 37:
 				//left
-				that.level.active.left -= 1
+				that.level.active.left -= 1;
 				break;
 			case 38:
 				//up
@@ -187,6 +195,6 @@ var game = function(canvas, level, score, time){
 	}
 }
 
-var x = new level(8, 16);
+var x = new level(16, 32);
 
 var game = new game(null, x);
