@@ -82,7 +82,9 @@ var level = function(width, height, _piece){
 	}
 	
 	this.createPiece = function(){
-		return this.pieces[Math.floor(Math.random()*this.pieces.length)];	
+		var p = this.pieces[Math.floor(Math.random()*this.pieces.length)];
+		p.left = Math.floor((this.structure[0].length - p.left -1)/2);
+		return p;
 	}
 	
 	this.active = _piece || this.createPiece();
