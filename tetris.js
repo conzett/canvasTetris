@@ -95,14 +95,14 @@ var level = function(width, height, _piece){
 	}
 	
 	this.checkInBoundsRight = function(){		
-		if(this.active.left >= this.structure[0].length){
+		if(this.active.left + this.active.structure[0].length >= this.structure[0].length){
 			return false;
 		}
 		return true;
 	}
 	
 	this.checkInBoundsBottom = function(){		
-		if(this.active.top >= this.structure.length){
+		if(this.active.top + this.active.structure.length >= this.structure.length){
 			return false;
 		}
 		return true;
@@ -126,20 +126,22 @@ var game = function(canvas, level, score, time){
 		
 		switch (event.keyCode) {
 			case 37:
-				//left
-				that.level.active.left -= 1;
+				if(that.level.checkInBoundsLeft()){
+					that.level.active.left -= 1;	
+				}				
 				break;
 			case 38:
-				//up
 				that.level.active.rotate('cw');
 				break;
 			case 39:
-				//right
-				that.level.active.left += 1;
+				if(that.level.checkInBoundsRight()){
+					that.level.active.left += 1;	
+				}				
 				break;
 			case 40:
-				//down
-				that.level.active.top += 1;
+				if(that.level.checkInBoundsBottom()){
+					that.level.active.top += 1;	
+				}				
 				break;
 		}
 		
@@ -170,7 +172,9 @@ var game = function(canvas, level, score, time){
 	}
 	
 	this.dropLoop = function(){
-		that.level.active.top++;
+		if(that.level.checkInBoundsBottom()){
+			that.level.active.top++;	
+		}		
 		setTimeout ( that.dropLoop, 1000);
 	}
 	
