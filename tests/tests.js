@@ -36,10 +36,10 @@ $(document).ready(function(){
 	test("Test checkInBoundsRight() method", function() {		
 		
 		var testLevel = new level(6,6, new piece());
-		testLevel.active.left = 6;
+		testLevel.active.left = 5;
 		equals(testLevel.checkInBoundsRight(), false, "6 units to the left, we expect the value to be false");
 		
-		testLevel.active.left = 5;
+		testLevel.active.left = 4;
 		equals(testLevel.checkInBoundsRight(), true, "5 units to the left, we expect the value to be true");
 		
 	});
@@ -49,10 +49,10 @@ $(document).ready(function(){
 		var testLevel = new level(6,6, new piece());
 		
 		testLevel.active.left = 0;
-		testLevel.active.top = 6;
+		testLevel.active.top = 5;
 		equals(testLevel.checkInBoundsBottom(), false, "6 units from the top, expect the value to be false");
 		
-		testLevel.active.top = 5;
+		testLevel.active.top = 4;
 		equals(testLevel.checkInBoundsBottom(), true, "5 units from the top, expect the value to be true");
 		
 	});
