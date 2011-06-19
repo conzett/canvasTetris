@@ -78,53 +78,45 @@ $(document).ready(function(){
 	test('Test "T-piece" rotate clock-wise', function() {
 		var testPiece = new piece(
 		       [[1,1,1],
-			[0,1,0],
-			[0,0,0]]
+			[0,1,0]]
 		);
 		
 		/* Expected Result
 		  
-		[[0,0,1],
-		 [0,1,1],
-		 [0,0,1]] */
+		[[0,1],
+		 [1,1],
+		 [0,1]] */
 		
 		testPiece.rotate('cw');
 		
 		equals(testPiece.structure[0][0], 0, "We expect this location to be 0" );
-		equals(testPiece.structure[0][1], 0, "We expect this location to be 0" );
-		equals(testPiece.structure[0][2], 1, "We expect this location to be 1" );
-		equals(testPiece.structure[1][0], 0, "We expect this location to be 0" );
+		equals(testPiece.structure[0][1], 1, "We expect this location to be 0" );
+		equals(testPiece.structure[1][0], 1, "We expect this location to be 0" );
 		equals(testPiece.structure[1][1], 1, "We expect this location to be 1" );
-		equals(testPiece.structure[1][2], 1, "We expect this location to be 1" );
 		equals(testPiece.structure[2][0], 0, "We expect this location to be 0" );
-		equals(testPiece.structure[2][1], 0, "We expect this location to be 0" );
-		equals(testPiece.structure[2][2], 1, "We expect this location to be 1" );
+		equals(testPiece.structure[2][1], 1, "We expect this location to be 0" );
 	});
 	
 	test('Test "T-piece" rotate counter-clock-wise', function() {
 		var testPiece = new piece(
 		       [[1,1,1],
-			[0,1,0],
-			[0,0,0]]
+			[0,1,0]]
 		);
 		
 		/* Expected Result
 		  
-		[[1,0,0],
-		 [1,1,0],
-		 [1,0,0]] */
+		[[1,0],
+		 [1,1],
+		 [1,0]] */
 		
 		testPiece.rotate('ccw');
 		
 		equals(testPiece.structure[0][0], 1, "We expect this location to be 1" );
 		equals(testPiece.structure[0][1], 0, "We expect this location to be 0" );
-		equals(testPiece.structure[0][2], 0, "We expect this location to be 0" );
 		equals(testPiece.structure[1][0], 1, "We expect this location to be 1" );
 		equals(testPiece.structure[1][1], 1, "We expect this location to be 1" );
-		equals(testPiece.structure[1][2], 0, "We expect this location to be 0" );
 		equals(testPiece.structure[2][0], 1, "We expect this location to be 1" );
 		equals(testPiece.structure[2][1], 0, "We expect this location to be 0" );
-		equals(testPiece.structure[2][2], 0, "We expect this location to be 0" );
 	});
 	
 });
