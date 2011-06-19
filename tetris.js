@@ -10,15 +10,15 @@ var piece = function(structure, color, top, left){
 	
 	this.rotate = function(direction){
 		
-		var temp = new Array(this.structure.length);
+		var temp = new Array(this.structure[0].length);
 		var i, j;
 		for(i = 0; i < temp.length; ++i){
-			temp[i] = new Array(temp.length);
-			for (j = 0; j < temp.length; ++j){
+			temp[i] = new Array(this.structure.length);
+			for (j = 0; j < temp[0].length; ++j){
 				if(direction === 'ccw'){
 					temp[i][j] = this.structure[j][temp.length - i - 1];
 				}else if(direction === 'cw'){
-					temp[i][j] = this.structure[temp.length - j - 1][i];
+					temp[i][j] = this.structure[temp[0].length - j - 1][i];
 				}				
 			}
 		}
@@ -32,40 +32,37 @@ var level = function(width, height, _piece){
 	
 	this.pieces = [
 		new piece(
-		       [[0,0,1,0],
-			[0,0,1,0],
-			[0,0,1,0],
-			[0,0,1,0]],
+		       [[1],
+			[1],
+			[1],
+			[1]],
 		       '#8FEBE9'
 		),
 		new piece(
-		       [[0,0,0],
-			[0,1,1],
+		       [[0,1,1],
 			[1,1,0]],
 		       '#3ED936'
 		),
 		new piece(
-		       [[0,0,0],
-			[1,1,0],
+		       [[1,1,0],
 			[0,1,1]],
 		       '#F23E22'
 		),
 		new piece(
 		       [[1,1,1],
-			[0,1,0],
-			[0,0,0]],
+			[0,1,0]],
 		       '#B21DCC'
 		),
 		new piece(
-		       [[0,1,0],
-			[0,1,0],
-			[1,1,0]],
+		       [[0,1],
+			[0,1],
+			[1,1]],
 		       '#194CC2'
 		),
 		new piece(
-		       [[0,1,0],
-			[0,1,0],
-			[0,1,1]],
+		       [[1,0],
+			[1,0],
+			[1,1]],
 		       '#F2B022'
 		),
 		new piece(
