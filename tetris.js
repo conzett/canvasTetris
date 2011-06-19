@@ -1,7 +1,4 @@
-var piece = function(structure, color, top, left){
-	
-	// structure should be a multidimensional
-	// array of equal height and width
+var piece = function(structure, color, top, left){	
 	
 	this.structure = structure || [[1]];
 	this.top = top || 0;
@@ -80,7 +77,8 @@ var level = function(width, height, _piece){
 	
 	this.createPiece = function(){
 		var p = this.pieces[Math.floor(Math.random()*this.pieces.length)];
-		p.left = Math.floor((this.structure[0].length - p.left -1)/2);
+		p.left = Math.floor((this.structure[0].length - p.structure[0].length)/2);
+		p.top = 0; //reset these since we're referencing existing objects
 		return p;
 	}
 	
@@ -131,6 +129,14 @@ var game = function(canvas, level, score, time){
 				break;
 			case 38:
 				that.level.active.rotate('cw');
+				if(!that.level.checkInBoundsRight()){
+					that.level.active.left =
+						(that.level.structure[0].length - that.level.active.structure[0].length);	
+				}
+				if(!that.level.checkInBoundsBottom()){
+					that.level.active.top =
+						(that.level.structure.length - that.level.active.structure.length);	
+				}
 				break;
 			case 39:
 				if(that.level.checkInBoundsRight()){
@@ -173,7 +179,9 @@ var game = function(canvas, level, score, time){
 	this.dropLoop = function(){
 		if(that.level.checkInBoundsBottom()){
 			that.level.active.top++;	
-		}		
+		}else{
+			that.level.active = that.level.createPiece();
+		}
 		setTimeout ( that.dropLoop, 1000);
 	}
 	
