@@ -181,6 +181,7 @@ var game = function(canvas, level, score, time){
 			that.level.active.top++;	
 		}else{
 			that.level.active = that.level.createPiece();
+			// store location in level structure
 		}
 		setTimeout ( that.dropLoop, 1000);
 	}
