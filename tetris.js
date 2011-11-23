@@ -104,6 +104,17 @@ var level = function(width, height, _piece){
 		}
 		return true;
 	}
+
+	this.placeActive = function(){
+		var j;
+		for(i = 0; i < this.active.structure.length; ++i){
+			for (j = 0; j < this.active.structure[i].length; ++j){
+				if(this.active.structure[i][j] == 1){
+					this.structure[i + this.active.top][j + this.active.left] = this.active.color;	
+				}
+			}
+		}
+	}
 }
 
 var game = function(canvas, level, score, time){
@@ -183,7 +194,7 @@ var game = function(canvas, level, score, time){
 			that.level.active = that.level.createPiece();
 			// store location in level structure
 		}
-		setTimeout ( that.dropLoop, 1000);
+		setTimeout ( that.dropLoop, 500);
 	}
 	
 	this.renderLoop = function(){

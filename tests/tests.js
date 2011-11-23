@@ -97,26 +97,29 @@ $(document).ready(function(){
 		equals(testPiece.structure[2][1], 1, "We expect this location to be 0" );
 	});
 	
-	test('Test "T-piece" rotate counter-clock-wise', function() {
+	test('Test set piece function', function() {
+
+		var color = "#336699";
+
 		var testPiece = new piece(
-		       [[1,1,1],
-			[0,1,0]]
+		    [[1,1,1],
+			[0,1,0]], color
 		);
+
+		testPiece.top = 2;
+		testPiece.left = 2;
+
+		var testLevel = new level(5,4, testPiece);		
+
+		testLevel.placeActive();
 		
-		/* Expected Result
-		  
-		[[1,0],
-		 [1,1],
-		 [1,0]] */
+		equals(testLevel.structure[2][2], color, "We expect this location to contain the color " + color );
+		equals(testLevel.structure[2][3], color, "We expect this location to contain the color " + color );
+		equals(testLevel.structure[2][4], color, "We expect this location to contain the color " + color );
+		equals(testLevel.structure[3][2], undefined, "We expect this location to nothing");
+		equals(testLevel.structure[3][3], color, "We expect this location to contain the color " + color );
+		equals(testLevel.structure[3][4], undefined, "We expect this location to nothing");
 		
-		testPiece.rotate('ccw');
-		
-		equals(testPiece.structure[0][0], 1, "We expect this location to be 1" );
-		equals(testPiece.structure[0][1], 0, "We expect this location to be 0" );
-		equals(testPiece.structure[1][0], 1, "We expect this location to be 1" );
-		equals(testPiece.structure[1][1], 1, "We expect this location to be 1" );
-		equals(testPiece.structure[2][0], 1, "We expect this location to be 1" );
-		equals(testPiece.structure[2][1], 0, "We expect this location to be 0" );
 	});
 	
 });
