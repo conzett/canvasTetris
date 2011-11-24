@@ -105,6 +105,18 @@ var level = function(width, height, _piece){
 		return true;
 	}
 
+	this.isObstructedLeft = function(){
+		
+	}
+
+	this.isObstructedRight = function(){
+		
+	}
+
+	this.isObstructedBottom = function(){
+		
+	}
+
 	this.placeActive = function(){
 		var j;
 		for(i = 0; i < this.active.structure.length; ++i){

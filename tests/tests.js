@@ -112,7 +112,7 @@ $(document).ready(function(){
 		var testLevel = new level(5,4, testPiece);		
 
 		testLevel.placeActive();
-		
+
 		equals(testLevel.structure[2][2], color, "We expect this location to contain the color " + color );
 		equals(testLevel.structure[2][3], color, "We expect this location to contain the color " + color );
 		equals(testLevel.structure[2][4], color, "We expect this location to contain the color " + color );
@@ -120,6 +120,75 @@ $(document).ready(function(){
 		equals(testLevel.structure[3][3], color, "We expect this location to contain the color " + color );
 		equals(testLevel.structure[3][4], undefined, "We expect this location to nothing");
 		
+	});
+
+	test('Test isObstructedLeft function', function() {
+
+		var testPiece = new piece(
+		    [[1,1,1],
+			[0,1,0]]
+		);
+
+		testPiece.top = 1;
+		testPiece.left = 1;
+
+		var testLevel = new level(5,4, testPiece);		
+
+		testLevel.structure[1][0] = "#336699";		
+		ok(testLevel.isObstructedLeft(), "We expect this location to return true");
+		
+		testLevel.structure[1][0] = undefined;		
+		ok(!testLevel.isObstructedLeft(), "We expect this location to return false");
+
+		testLevel.structure[2][1] = "#336699";		
+		ok(testLevel.isObstructedLeft(), "We expect this location to return true");
+			
+	});
+
+	test('Test isObstructedRight function', function() {
+
+		var testPiece = new piece(
+		    [[1,1,1],
+			[0,1,0]]
+		);
+
+		testPiece.top = 1;
+		testPiece.left = 1;
+
+		var testLevel = new level(5,4, testPiece);		
+
+		testLevel.structure[1][4] = "#336699";		
+		ok(testLevel.isObstructedRight(), "We expect this location to return true");
+		
+		testLevel.structure[1][4] = undefined;		
+		ok(!testLevel.isObstructedRight(), "We expect this location to return false");
+
+		testLevel.structure[2][3] = "#336699";		
+		ok(testLevel.isObstructedRight(), "We expect this location to return true");
+			
+	});
+
+	test('Test isObstructedBottom function', function() {
+
+		var testPiece = new piece(
+		    [[1,1,1],
+			[0,1,0]]
+		);
+
+		testPiece.top = 1;
+		testPiece.left = 1;
+
+		var testLevel = new level(5,4, testPiece);		
+
+		testLevel.structure[3][2] = "#336699";		
+		ok(testLevel.isObstructedBottom(), "We expect this location to return true");
+		
+		testLevel.structure[3][2] = undefined;		
+		ok(!testLevel.isObstructedBottom(), "We expect this location to return false");
+
+		testLevel.structure[2][1] = "#336699";		
+		ok(testLevel.isObstructedBottom(), "We expect this location to return true");
+			
 	});
 	
 });
