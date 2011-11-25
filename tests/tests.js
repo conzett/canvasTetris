@@ -56,47 +56,7 @@ $(document).ready(function(){
 		equals(testLevel.checkInBoundsBottom(), true, "5 units from the top, expect the value to be true");
 		
 	});
-	
-	module("Piece Module", {
 
-	});	
-
-	test("Test piece array creation", function() {
-		var testPiece = new piece([[true, true], [true, true]]);	
-		equals(testPiece.structure[1][1], true, "We expect the array location to be true" );		
-	});
-	
-	test('Test piece rotate counter-clock-wise', function() {
-		var testPiece = new piece([[true, false], [false, true]]);
-		testPiece.rotate('ccw');
-		equals(testPiece.structure[0][0], false, "We expect this location to be false" );
-		equals(testPiece.structure[0][1], true, "We expect this location to be true" );
-		equals(testPiece.structure[1][0], true, "We expect this location to be true" );
-		equals(testPiece.structure[1][1], false, "We expect this location to be false" );		
-	});
-	
-	test('Test "T-piece" rotate clock-wise', function() {
-		var testPiece = new piece(
-		       [[1,1,1],
-			[0,1,0]]
-		);
-		
-		/* Expected Result
-		  
-		[[0,1],
-		 [1,1],
-		 [0,1]] */
-		
-		testPiece.rotate('cw');
-		
-		equals(testPiece.structure[0][0], 0, "We expect this location to be 0" );
-		equals(testPiece.structure[0][1], 1, "We expect this location to be 0" );
-		equals(testPiece.structure[1][0], 1, "We expect this location to be 0" );
-		equals(testPiece.structure[1][1], 1, "We expect this location to be 1" );
-		equals(testPiece.structure[2][0], 0, "We expect this location to be 0" );
-		equals(testPiece.structure[2][1], 1, "We expect this location to be 0" );
-	});
-	
 	test('Test set piece function', function() {
 
 		var color = "#336699";
@@ -190,5 +150,47 @@ $(document).ready(function(){
 		ok(testLevel.isObstructedBottom(), "We expect this location to return true");
 			
 	});
+	
+	module("Piece Module", {
+
+	});	
+
+	test("Test piece array creation", function() {
+		var testPiece = new piece([[true, true], [true, true]]);	
+		equals(testPiece.structure[1][1], true, "We expect the array location to be true" );		
+	});
+	
+	test('Test piece rotate counter-clock-wise', function() {
+		var testPiece = new piece([[true, false], [false, true]]);
+		testPiece.rotate('ccw');
+		equals(testPiece.structure[0][0], false, "We expect this location to be false" );
+		equals(testPiece.structure[0][1], true, "We expect this location to be true" );
+		equals(testPiece.structure[1][0], true, "We expect this location to be true" );
+		equals(testPiece.structure[1][1], false, "We expect this location to be false" );		
+	});
+	
+	test('Test "T-piece" rotate clock-wise', function() {
+		var testPiece = new piece(
+		       [[1,1,1],
+			[0,1,0]]
+		);
+		
+		/* Expected Result
+		  
+		[[0,1],
+		 [1,1],
+		 [0,1]] */
+		
+		testPiece.rotate('cw');
+		
+		equals(testPiece.structure[0][0], 0, "We expect this location to be 0" );
+		equals(testPiece.structure[0][1], 1, "We expect this location to be 0" );
+		equals(testPiece.structure[1][0], 1, "We expect this location to be 0" );
+		equals(testPiece.structure[1][1], 1, "We expect this location to be 1" );
+		equals(testPiece.structure[2][0], 0, "We expect this location to be 0" );
+		equals(testPiece.structure[2][1], 1, "We expect this location to be 0" );
+	});
+	
+	
 	
 });
