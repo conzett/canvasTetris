@@ -168,8 +168,8 @@ $(document).ready(function(){
 
 		result = testLevel.getFullRows();
 				
-		equals(2, 2, "We expect this to equl 2 the index of the first full row");
-		equals(4, 4, "We expect this to equl 4 the index of the next full row");
+		equals(result[0], 2, "We expect this to equl 2 the index of the first full row");
+		equals(result[1], 4, "We expect this to equl 4 the index of the next full row");
 			
 	});
 	

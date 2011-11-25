@@ -164,7 +164,7 @@ var level = function(width, height, _piece){
 			for(j = 0; j < this.structure[i].length; j++){
 				if(this.structure[i][j] === undefined){
 					break;
-				}else if(j === this.structure[i].length){
+				}else if(j === (this.structure[i].length -1)){
 					result.push(i);
 				}
 			}
