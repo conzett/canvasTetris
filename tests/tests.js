@@ -132,11 +132,11 @@ $(document).ready(function(){
 		testPiece.top = 1;
 		testPiece.left = 1;
 
-		var testLevel = new level(5,4, testPiece);		
+		var testLevel = new level(5,4, testPiece);	
 
 		testLevel.structure[1][0] = "#336699";		
 		ok(testLevel.isObstructedLeft(), "We expect this location to return true");
-		
+
 		testLevel.structure[1][0] = undefined;		
 		ok(!testLevel.isObstructedLeft(), "We expect this location to return false");
 

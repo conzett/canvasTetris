@@ -98,7 +98,7 @@ var level = function(width, height, _piece){
 		return true;
 	}
 	
-	this.checkInBoundsBottom = function(){		
+	this.checkInBoundsBottom = function(){	
 		if(this.active.top + this.active.structure.length >= this.structure.length){
 			return false;
 		}
@@ -106,7 +106,17 @@ var level = function(width, height, _piece){
 	}
 
 	this.isObstructedLeft = function(){
-		
+		for(i = 0; i < this.active.structure.length; i++){
+			for(j = 0; j < this.active.structure[i].length; j++){
+				if(this.active.structure[i][j] === 1){
+					if(this.structure[this.active.top + i][this.active.left +j -1] != undefined){
+						return true;
+					}
+					break;
+				}
+			}
+		}
+		return false;		
 	}
 
 	this.isObstructedRight = function(){
@@ -146,7 +156,8 @@ var game = function(canvas, level, score, time){
 		
 		switch (event.keyCode) {
 			case 37:
-				if(that.level.checkInBoundsLeft()){
+				if(that.level.checkInBoundsLeft() &&
+					!that.level.isObstructedLeft()){
 					that.level.active.left -= 1;	
 				}				
 				break;
