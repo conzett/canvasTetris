@@ -150,6 +150,28 @@ $(document).ready(function(){
 		ok(testLevel.isObstructedBottom(), "We expect this location to return true");
 			
 	});
+
+	test('Test getFullRows function', function() {
+
+		var testLevel = new level(5,5);
+		var i;
+
+		testLevel.structure[0][2] = "#336699";
+		
+		for(i = 0; i < testLevel.structure[0].length; i++){
+			testLevel.structure[2][i] = "#336699";	
+		}
+
+		for(i = 0; i < testLevel.structure[0].length; i++){
+			testLevel.structure[4][i] = "#336699";	
+		}
+
+		var result = testLevel.getFullRows();
+				
+		equals(result[0], 2, "We expect this to equl 2 the index of the first full row");
+		equals(result[1], 4, "We expect this to equl 4 the index of the next full row");
+			
+	});
 	
 	module("Piece Module", {
 

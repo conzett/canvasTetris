@@ -156,6 +156,10 @@ var level = function(width, height, _piece){
 			}
 		}
 	}
+
+	this.getFullRows = function(){
+		
+	}
 }
 
 var game = function(canvas, level, score, time){
