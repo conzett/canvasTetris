@@ -191,7 +191,10 @@ var game = function(canvas, level, score, time){
 	this.increment = 20;
 	this.canvas.width = this.level.structure[0].length * this.increment;
 	this.canvas.height = this.level.structure.length * this.increment;
+
 	var that = this;
+	var img = new Image();
+	img.src = 'block.png';
 	
 	window.addEventListener('keydown', function(event) {
 		
@@ -230,7 +233,7 @@ var game = function(canvas, level, score, time){
 	}, false );
 	
 	this.drawActive = function(){		
-		var i, j, x = that.increment;
+		var i, j, x = that.increment;	
 		
 		context.fillStyle = that.level.active.color;
 		
@@ -242,6 +245,9 @@ var game = function(canvas, level, score, time){
 						(i + that.level.active.top) * x,
 						x, x
 					);
+					context.drawImage(img,
+						(j + that.level.active.left) * x,
+						(i + that.level.active.top) * x);
 				}
 			}
 		}	
@@ -259,6 +265,9 @@ var game = function(canvas, level, score, time){
 						(i * x),
 						x, x
 					);
+					context.drawImage(img,
+						j * x,
+						i * x);
 				}
 			}
 		}
