@@ -278,6 +278,7 @@ var game = function(canvas, level, score, time){
 			that.level.placeActive();
 			that.level.active = that.level.createPiece();			
 		}
+		that.level.clearRows(that.level.getFullRows());
 		setTimeout ( that.dropLoop, 500);
 	}
 	
@@ -302,7 +303,3 @@ var game = function(canvas, level, score, time){
 		alert("Canvas Not Supported");
 	}
 }
-
-var x = new level(16, 32);
-
-var game = new game(null, x);
