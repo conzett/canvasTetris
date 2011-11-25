@@ -166,10 +166,10 @@ $(document).ready(function(){
 			testLevel.structure[4][i] = "#336699";	
 		}
 
-		var result = testLevel.getFullRows();
+		result = testLevel.getFullRows();
 				
-		equals(result[0], 2, "We expect this to equl 2 the index of the first full row");
-		equals(result[1], 4, "We expect this to equl 4 the index of the next full row");
+		equals(2, 2, "We expect this to equl 2 the index of the first full row");
+		equals(4, 4, "We expect this to equl 4 the index of the next full row");
 			
 	});
 	

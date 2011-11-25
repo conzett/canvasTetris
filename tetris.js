@@ -158,7 +158,18 @@ var level = function(width, height, _piece){
 	}
 
 	this.getFullRows = function(){
-		
+		var result = [];
+		var j;
+		for(i = 0; i < this.structure.length; i++){
+			for(j = 0; j < this.structure[i].length; j++){
+				if(this.structure[i][j] === undefined){
+					break;
+				}else if(j === this.structure[i].length){
+					result.push(i);
+				}
+			}
+		}
+		return result;
 	}
 }
 
