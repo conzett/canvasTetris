@@ -171,6 +171,10 @@ var level = function(width, height, _piece){
 		}
 		return result;
 	}
+
+	this.clearRows = function(rows){
+		
+	}
 }
 
 var game = function(canvas, level, score, time){

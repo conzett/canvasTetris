@@ -172,6 +172,26 @@ $(document).ready(function(){
 		equals(result[1], 4, "We expect this to equl 4 the index of the next full row");
 			
 	});
+
+	test('Test clearRows function', function() {
+
+		var testLevel = new level(5,5);
+		var i;
+		
+		for(i = 0; i < testLevel.structure[0].length; i++){
+			testLevel.structure[2][i] = "#336699";	
+		}
+
+		testLevel.clearRows();
+
+		for(i = 0; i < testLevel.structure[0].length; i++){
+			equals(testLevel.structure[2][i], undefined, "We expect the space at index " + i + " to be undefined");
+		}
+				
+		
+		equals(testLevel.structure.length, 5, "We expect the length to still be 5");
+			
+	});
 	
 	module("Piece Module", {
 
