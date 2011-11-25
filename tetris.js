@@ -120,7 +120,17 @@ var level = function(width, height, _piece){
 	}
 
 	this.isObstructedRight = function(){
-		
+		for(i = 0; i < this.active.structure.length; i++){
+			for(j = (this.active.structure[i].length -1); j >= 0; j--){
+				if(this.active.structure[i][j] === 1){
+					if(this.structure[this.active.top + i][this.active.left + j + 1] != undefined){
+						return true;
+					}
+					break;
+				}
+			}
+		}
+		return false;		
 	}
 
 	this.isObstructedBottom = function(){
