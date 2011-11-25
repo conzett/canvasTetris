@@ -134,7 +134,16 @@ var level = function(width, height, _piece){
 	}
 
 	this.isObstructedBottom = function(){
-		
+		for(i = (this.active.structure.length -1); i >= 0; i--){
+			for(j = 0; j < this.active.structure[i].length; j++){
+				if(this.active.structure[i][j] === 1){
+					if(this.structure[this.active.top + i +1][this.active.left +j] != undefined){
+						return true;
+					}
+				}
+			}
+		}
+		return false;	
 	}
 
 	this.placeActive = function(){
@@ -183,12 +192,14 @@ var game = function(canvas, level, score, time){
 				}
 				break;
 			case 39:
-				if(that.level.checkInBoundsRight()){
+				if(that.level.checkInBoundsRight() &&
+					!that.level.isObstructedRight()){
 					that.level.active.left += 1;	
 				}				
 				break;
 			case 40:
-				if(that.level.checkInBoundsBottom()){
+				if(that.level.checkInBoundsBottom() &&
+					!that.level.isObstructedBottom()){
 					that.level.active.top += 1;	
 				}				
 				break;
@@ -238,7 +249,8 @@ var game = function(canvas, level, score, time){
 	}
 	
 	this.dropLoop = function(){
-		if(that.level.checkInBoundsBottom()){
+		if(that.level.checkInBoundsBottom() &&
+			!that.level.isObstructedBottom()){
 			that.level.active.top++;	
 		}else{
 			that.level.placeActive();
