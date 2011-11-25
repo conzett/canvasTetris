@@ -182,7 +182,7 @@ $(document).ready(function(){
 			testLevel.structure[2][i] = "#336699";	
 		}
 
-		testLevel.clearRows();
+		testLevel.clearRows([2]);
 
 		for(i = 0; i < testLevel.structure[0].length; i++){
 			equals(testLevel.structure[2][i], undefined, "We expect the space at index " + i + " to be undefined");

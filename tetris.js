@@ -173,7 +173,10 @@ var level = function(width, height, _piece){
 	}
 
 	this.clearRows = function(rows){
-		
+		for(i=0; i < rows.length; i++){
+			this.structure.splice(rows[i],1);
+			this.structure.unshift(new Array(width))
+		}	
 	}
 }
 
