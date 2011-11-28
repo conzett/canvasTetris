@@ -273,12 +273,6 @@ var game = function(canvas, level, score, time){
 		}
 	}
 	
-	this.fpsLoop = function(){
-		document.getElementById('fps').innerHTML = that.fps;
-		that.fps = 0;
-		setTimeout ( that.fpsLoop, 1000);
-	}
-	
 	this.dropLoop = function(){
 		if(that.level.checkInBoundsBottom() &&
 			!that.level.isObstructedBottom()){
