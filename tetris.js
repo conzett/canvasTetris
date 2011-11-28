@@ -178,6 +178,19 @@ var level = function(width, height, _piece){
 			this.structure.unshift(new Array(width))
 		}	
 	}
+
+	this.full = function(){
+		if(this.active.top === 0){
+			for(i=0; i < this.structure[0].length; i++){
+				if(this.structure[0][i] != undefined){
+					if(this.active.left === i){
+						return true
+					}
+				}
+			}
+		}
+		return false;
+	}
 }
 
 var game = function(canvas, level, score, time){
@@ -274,6 +287,10 @@ var game = function(canvas, level, score, time){
 	}
 	
 	this.dropLoop = function(){
+		if(that.level.full()){
+			that.status = "stop";
+			console.log("game over");
+		}
 		if(that.level.checkInBoundsBottom() &&
 			!that.level.isObstructedBottom()){
 			that.level.active.top++;	
@@ -282,7 +299,9 @@ var game = function(canvas, level, score, time){
 			that.level.active = that.level.createPiece();			
 		}
 		that.level.clearRows(that.level.getFullRows());
-		setTimeout ( that.dropLoop, 500);
+		if( that.status !== "stop" ){
+			setTimeout ( that.dropLoop, 500);
+		}		
 	}
 	
 	this.renderLoop = function(){
@@ -299,7 +318,6 @@ var game = function(canvas, level, score, time){
 	
 	if (this.canvas.getContext) {
 		var context = this.canvas.getContext('2d');
-		this.fpsLoop();
 		this.renderLoop();
 		this.dropLoop();
 	} else {
