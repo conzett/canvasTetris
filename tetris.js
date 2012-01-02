@@ -25,49 +25,7 @@ var piece = function(structure, color, top, left){
 
 var level = function(width, height, _piece){
 	
-	this.structure = new Array(height);	
-	
-	this.pieces = [
-		new piece(
-		       [[1],
-			[1],
-			[1],
-			[1]],
-		       '#8FEBE9'
-		),
-		new piece(
-		       [[0,1,1],
-			[1,1,0]],
-		       '#3ED936'
-		),
-		new piece(
-		       [[1,1,0],
-			[0,1,1]],
-		       '#F23E22'
-		),
-		new piece(
-		       [[1,1,1],
-			[0,1,0]],
-		       '#B21DCC'
-		),
-		new piece(
-		       [[0,1],
-			[0,1],
-			[1,1]],
-		       '#194CC2'
-		),
-		new piece(
-		       [[1,0],
-			[1,0],
-			[1,1]],
-		       '#F2B022'
-		),
-		new piece(
-		       [[1,1],
-			[1,1]],
-		       '#F2ED50'
-		)
-	];
+	this.structure = new Array(height);
 	
 	var i;
 	
@@ -76,10 +34,34 @@ var level = function(width, height, _piece){
 	}
 	
 	this.createPiece = function(){
-		var p = this.pieces[Math.floor(Math.random()*this.pieces.length)];
-		p.left = Math.floor((this.structure[0].length - p.structure[0].length)/2);
-		p.top = 0; //reset these since we're referencing existing objects
-		return p;
+
+		var left = Math.floor((this.structure[0].length)/2);
+		var num = Math.floor(Math.random()*7);
+
+		switch(num)
+		{
+		case 0:
+			return new piece([[1],[1],[1],[1]], '#8FEBE9', 0, left);
+			break;
+		case 1:
+			return new piece([[0,1,1],[1,1,0]], '#3ED936', 0, left);
+			break;
+		case 2:
+			return new piece([[1,1,0],[0,1,1]], '#F23E22', 0, left);
+			break;
+		case 3:
+			return new piece([[1,1,1],[0,1,0]], '#B21DCC', 0, left);
+			break;
+		case 4:
+			return new piece([[0,1],[0,1],[1,1]], '#194CC2', 0, left);
+			break;
+		case 5:
+			return new piece([[1,0],[1,0],[1,1]], '#F2B022', 0, left);
+			break;
+		case 6:
+			return new piece([[1,1],[1,1]], '#F2ED50', 0, left);
+			break;
+		}
 	}
 	
 	this.active = _piece || this.createPiece();
@@ -296,7 +278,7 @@ var game = function(canvas, level, score, time){
 			that.level.active.top++;	
 		}else{
 			that.level.placeActive();
-			that.level.active = that.level.createPiece();			
+			that.level.active = that.level.createPiece();	
 		}
 		that.level.clearRows(that.level.getFullRows());
 		if( that.status !== "stop" ){
