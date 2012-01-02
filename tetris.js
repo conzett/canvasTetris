@@ -321,6 +321,6 @@ var game = function(canvas, level, score, time){
 		this.renderLoop();
 		this.dropLoop();
 	} else {
-		alert("Canvas Not Supported");
+		//insert warning about not supported canvas
 	}
 }
