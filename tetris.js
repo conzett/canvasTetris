@@ -179,6 +179,7 @@ var game = function(canvas, level, score, time){
 	
 	this.canvas = canvas || document.getElementById('level');
 	this.level = level || new level(8, 16);
+	this.levelNumber = 0;
 	this.score = score || 0;
 	this.time = time || 100;
 	this.status = "play";
@@ -290,7 +291,28 @@ var game = function(canvas, level, score, time){
 		}else{
 			that.level.active.top++;	
 		}
-		that.level.clearRows(that.level.getFullRows());
+
+		var fullRows = that.level.getFullRows();
+
+		switch(fullRows.length)
+		{
+		case 1:
+			that.score += (40*(that.levelNumber +1));
+			break;
+		case 2:
+			that.score += (100*(that.levelNumber +1));
+			break;
+		case 3:
+			that.score += (300*(that.levelNumber +1));
+			break;
+		case 4:
+			that.score += (1200*(that.levelNumber +1));
+			break;
+		}
+
+		console.log(that.score);
+
+		that.level.clearRows(fullRows);
 
 		if(that.level.full()){
 			that.status = "stop";
