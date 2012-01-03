@@ -223,9 +223,25 @@ var game = function(canvas, level, score, time){
 					that.level.active.top += 1;	
 				}				
 				break;
+			case 19:
+				that.pause();		
+				break;
+			case 80:
+				that.pause();		
+				break;
 		}
 		
 	}, false );
+
+	this.pause = function() {
+		if(that.status === "play"){
+					that.status = "stop";
+				}else{
+					that.status = "play";
+					that.renderLoop();
+					that.dropLoop();
+		}
+	}
 	
 	this.drawActive = function(){		
 		var i, j, x = that.increment;	
