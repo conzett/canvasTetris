@@ -2,7 +2,7 @@ var piece = function(structure, color, top, left){
 	
 	this.structure = structure || [[1]];
 	this.top = top || 0;
-	this.left = left || 0;
+	this.left = (left - structure[0].length +1);
 	this.color = color || '#000000';
 	
 	this.rotate = function(direction){
