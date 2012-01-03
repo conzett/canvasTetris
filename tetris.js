@@ -1,7 +1,7 @@
 var piece = function(structure, color, top, left){	
 	
 	this.structure = structure || [[1]];
-	this.top = top || 0;
+	this.top = (-1*structure.length -1)
 	this.left = (left - structure[0].length +1);
 	this.color = color || '#000000';
 	
@@ -119,7 +119,9 @@ var level = function(width, height, _piece){
 		for(i = (this.active.structure.length -1); i >= 0; i--){
 			for(j = 0; j < this.active.structure[i].length; j++){
 				if(this.active.structure[i][j] === 1){
-					if(this.structure[this.active.top + i +1][this.active.left +j] != undefined){
+					var top = this.active.top;
+					if(top < 0) top = 0;
+					if(this.structure[top + i +1][this.active.left +j] != undefined){
 						return true;
 					}
 				}
@@ -132,8 +134,10 @@ var level = function(width, height, _piece){
 		var j;
 		for(i = 0; i < this.active.structure.length; ++i){
 			for (j = 0; j < this.active.structure[i].length; ++j){
+				var top = this.active.top;
+				if(top < 0) top = 0;
 				if(this.active.structure[i][j] == 1){
-					this.structure[i + this.active.top][j + this.active.left] = this.active.color;	
+					this.structure[i + top][j + this.active.left] = this.active.color;	
 				}
 			}
 		}
@@ -162,13 +166,9 @@ var level = function(width, height, _piece){
 	}
 
 	this.full = function(){
-		if(this.active.top === 0){
-			for(i=0; i < this.structure[0].length; i++){
-				if(this.structure[0][i] != undefined){
-					if(this.active.left === i){
-						return true
-					}
-				}
+		for(i=0; i < this.structure[0].length; i++){
+			if(this.structure[0][i] != undefined){
+				return true;
 			}
 		}
 		return false;
@@ -246,8 +246,7 @@ var game = function(canvas, level, score, time){
 	this.drawActive = function(){		
 		var i, j, x = that.increment;	
 		
-		context.fillStyle = that.level.active.color;
-		
+		context.fillStyle = that.level.active.color;	
 		for (i = 0; i < that.level.active.structure.length; ++i){
 			for (j = 0; j < that.level.active.structure[i].length; ++j){
 				if(that.level.active.structure[i][j] === 1){
@@ -261,7 +260,7 @@ var game = function(canvas, level, score, time){
 						(i + that.level.active.top) * x);
 				}
 			}
-		}	
+		}
 	}
 
 	this.drawLevel = function(){
@@ -284,19 +283,20 @@ var game = function(canvas, level, score, time){
 		}
 	}
 	
-	this.dropLoop = function(){
+	this.dropLoop = function(){		
+		if(!that.level.checkInBoundsBottom() || that.level.isObstructedBottom()){
+			that.level.placeActive();
+			that.level.active = that.level.createPiece();	
+		}else{
+			that.level.active.top++;	
+		}
+		that.level.clearRows(that.level.getFullRows());
+
 		if(that.level.full()){
 			that.status = "stop";
 			console.log("game over");
 		}
-		if(that.level.checkInBoundsBottom() &&
-			!that.level.isObstructedBottom()){
-			that.level.active.top++;	
-		}else{
-			that.level.placeActive();
-			that.level.active = that.level.createPiece();	
-		}
-		that.level.clearRows(that.level.getFullRows());
+
 		if( that.status !== "stop" ){
 			setTimeout ( that.dropLoop, 500);
 		}		
