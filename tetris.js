@@ -91,7 +91,9 @@ var level = function(width, height, _piece){
 		for(i = 0; i < this.active.structure.length; i++){
 			for(j = 0; j < this.active.structure[i].length; j++){
 				if(this.active.structure[i][j] === 1){
-					if(this.structure[this.active.top + i][this.active.left +j -1] != undefined){
+					var top = this.active.top;
+					if(top < 0) top = 0;
+					if(this.structure[top+ i][this.active.left +j -1] != undefined){
 						return true;
 					}
 					break;
@@ -105,7 +107,9 @@ var level = function(width, height, _piece){
 		for(i = 0; i < this.active.structure.length; i++){
 			for(j = (this.active.structure[i].length -1); j >= 0; j--){
 				if(this.active.structure[i][j] === 1){
-					if(this.structure[this.active.top + i][this.active.left + j + 1] != undefined){
+					var top = this.active.top;
+					if(top < 0) top = 0;
+					if(this.structure[top + i][this.active.left + j + 1] != undefined){
 						return true;
 					}
 					break;
