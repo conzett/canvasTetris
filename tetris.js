@@ -184,6 +184,7 @@ var game = function(canvas, level, score, time){
 	this.canvas = canvas || document.getElementById('level');
 	this.level = level || new level(8, 16);
 	this.levelNumber = 0;
+	this.linesCleared = 0;
 	this.score = score || 0;
 	this.time = time || 100;
 	this.status = "play";
@@ -314,8 +315,9 @@ var game = function(canvas, level, score, time){
 			break;
 		}
 
-		console.log(that.score);
-
+		document.getElementById("score").innerHTML = that.score;
+		that.linesCleared += fullRows.length;
+		that.levelNumber = Math.floor(that.linesCleared/10);
 		that.level.clearRows(fullRows);
 
 		if(that.level.full()){
@@ -324,7 +326,7 @@ var game = function(canvas, level, score, time){
 		}
 
 		if( that.status !== "stop" ){
-			setTimeout ( that.dropLoop, 500);
+			setTimeout ( that.dropLoop, (500 - (that.levelNumber * 10)));
 		}		
 	}
 	
