@@ -120,16 +120,18 @@ var level = function(width, height, _piece){
 	}
 
 	this.isObstructedBottom = function(){
-		for(i = (this.active.structure.length -1); i >= 0; i--){
-			for(j = 0; j < this.active.structure[i].length; j++){
+		var x = i;
+		for (i = (this.active.structure.length - 1); i >= 0; i--){	
+			for(j = 0; j <= (this.active.structure[0].length -1); j++){
 				if(this.active.structure[i][j] === 1){
-					var top = this.active.top;
-					if(top < 0) top = 0;
-					if(this.structure[top + i +1][this.active.left +j] != undefined){
+					var temp = (this.active.top + this.active.structure.length - x);
+					if(temp < 0) break;
+					if(this.structure[temp][this.active.left + j] != undefined){
 						return true;
 					}
 				}
 			}
+			x++;
 		}
 		return false;	
 	}
@@ -186,6 +188,7 @@ var game = function(canvas, level, score, time){
 
 	var that = this;
 	var img = new Image();
+	var timer;
 	img.src = 'block.png';
 	
 	window.addEventListener('keydown', function(event) {
@@ -194,7 +197,9 @@ var game = function(canvas, level, score, time){
 			case 37:
 				if(that.level.checkInBoundsLeft() &&
 					!that.level.isObstructedLeft()){
-					that.level.active.left -= 1;	
+					that.level.active.left -= 1;
+					clearTimeout(timer);
+					timer = setTimeout ( that.dropLoop, (500 - (that.levelNumber * 10)));	
 				}				
 				break;
 			case 38:
@@ -211,13 +216,15 @@ var game = function(canvas, level, score, time){
 			case 39:
 				if(that.level.checkInBoundsRight() &&
 					!that.level.isObstructedRight()){
-					that.level.active.left += 1;	
+					that.level.active.left += 1;
+					clearTimeout(timer);
+					timer = setTimeout ( that.dropLoop, (500 - (that.levelNumber * 10)));
 				}				
 				break;
 			case 40:
 				if(that.level.checkInBoundsBottom() &&
 					!that.level.isObstructedBottom()){
-					that.level.active.top += 1;	
+					that.level.active.top += 1;
 				}				
 				break;
 			case 19:
@@ -317,7 +324,7 @@ var game = function(canvas, level, score, time){
 		that.level.clearRows(fullRows);
 
 		if( that.status !== "stop" ){
-			setTimeout ( that.dropLoop, (100 - (that.levelNumber * 10)));
+			timer = setTimeout ( that.dropLoop, (500 - (that.levelNumber * 10)));
 		}		
 	}
 	
