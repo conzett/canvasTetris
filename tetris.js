@@ -1,8 +1,10 @@
 var piece = function(structure, color, top, left){	
 	
 	this.structure = structure || [[1]];
-	this.top = (-1*structure.length)
+	this.top = (-1 * structure.length)
 	this.left = (left - structure[0].length +1);
+	this.height = structure.length;
+	this.width = structure[0].length;
 	this.color = color || '#000000';
 	
 	this.rotate = function(direction){
@@ -20,22 +22,26 @@ var piece = function(structure, color, top, left){
 			}
 		}
 		this.structure = temp;
+		this.height = temp.length;
+		this.width = temp[0].length;
 	}
 }
 
-var level = function(width, height, _piece){
+var level = function(width, height, p){
 	
 	this.structure = new Array(height);
+	this.width = width;
+	this.height = height;
 	
 	var i;
 	
-	for (i = 0; i < this.structure.length; ++i){
+	for (i = 0; i < height; ++i){
 		this.structure[i] = new Array(width);
 	}
 	
 	this.createPiece = function(){
 
-		var left = Math.floor((this.structure[0].length)/2);
+		var left = Math.floor(width/2);
 		var num = Math.floor(Math.random()*7);
 
 		switch(num)
@@ -64,36 +70,18 @@ var level = function(width, height, _piece){
 		}
 	}
 	
-	this.active = _piece || this.createPiece();
-	
-	this.checkInBoundsLeft = function(){		
-		if(this.active.left <= 0){
-			return false;
-		}
-		return true;
-	}
-	
-	this.checkInBoundsRight = function(){		
-		if(this.active.left + this.active.structure[0].length >= this.structure[0].length){
-			return false;
-		}
-		return true;
-	}
-	
-	this.checkInBoundsBottom = function(){	
-		if(this.active.top + this.active.structure.length >= this.structure.length){
-			return false;
-		}
-		return true;
-	}
+	this.active = p || this.createPiece();
 
 	this.isObstructedLeft = function(){
-		for(i = 0; i < this.active.structure.length; i++){
-			for(j = 0; j < this.active.structure[i].length; j++){
+		if(this.active.left <= 0){
+			return true;
+		}
+		for(i = 0; i < this.active.height; i++){
+			for(j = 0; j < this.active.width; j++){
 				if(this.active.structure[i][j] === 1){
 					var top = this.active.top;
 					if(top < 0) top = 0;
-					if(this.structure[top+ i][this.active.left +j -1] != undefined){
+					if(this.structure[top + i][this.active.left +j -1] != undefined){
 						return true;
 					}
 					break;
@@ -104,8 +92,11 @@ var level = function(width, height, _piece){
 	}
 
 	this.isObstructedRight = function(){
-		for(i = 0; i < this.active.structure.length; i++){
-			for(j = (this.active.structure[i].length -1); j >= 0; j--){
+		if(this.active.left + this.active.width >= width){
+			return true;
+		}
+		for(i = 0; i < this.active.height; i++){
+			for(j = (this.active.width -1); j >= 0; j--){
 				if(this.active.structure[i][j] === 1){
 					var top = this.active.top;
 					if(top < 0) top = 0;
@@ -120,26 +111,30 @@ var level = function(width, height, _piece){
 	}
 
 	this.isObstructedBottom = function(){
-		var x = i;
-		for (i = (this.active.structure.length - 1); i >= 0; i--){	
-			for(j = 0; j <= (this.active.structure[0].length -1); j++){
+		var nextRow;
+		for (i = (this.active.height - 1); i >= 0; i--){
+			nextRow = 1 + i + this.active.top;
+			if(nextRow >= height){
+				return true;
+			}
+			if(nextRow < 0){
+				break;
+			}
+			for(j = 0; j <= (this.active.width -1); j++){
 				if(this.active.structure[i][j] === 1){
-					var temp = (this.active.top + this.active.structure.length - x);
-					if(temp < 0) break;
-					if(this.structure[temp][this.active.left + j] != undefined){
+					if(this.structure[nextRow][this.active.left + j] != undefined){
 						return true;
 					}
 				}
 			}
-			x++;
 		}
 		return false;	
 	}
 
 	this.placeActive = function(){
 		var j;
-		for(i = 0; i < this.active.structure.length; ++i){
-			for (j = 0; j < this.active.structure[i].length; ++j){
+		for(i = 0; i < this.active.height; ++i){
+			for (j = 0; j < this.active.width; ++j){
 				if(this.active.structure[i][j] == 1){
 					if((i + this.active.top) >= 0){
 						this.structure[i + this.active.top][j + this.active.left] = this.active.color;
@@ -150,13 +145,12 @@ var level = function(width, height, _piece){
 	}
 
 	this.getFullRows = function(){
-		var result = [];
-		var j;
-		for(i = 0; i < this.structure.length; i++){
-			for(j = 0; j < this.structure[i].length; j++){
+		var j, result = [];
+		for(i = 0; i < height; i++){
+			for(j = 0; j < width; j++){
 				if(this.structure[i][j] === undefined){
 					break;
-				}else if(j === (this.structure[i].length -1)){
+				}else if(j === (width -1)){
 					result.push(i);
 				}
 			}
@@ -183,47 +177,36 @@ var game = function(canvas, level, score, time){
 	this.status = "play";
 	this.fps = 0;
 	this.increment = 20;
-	this.canvas.width = this.level.structure[0].length * this.increment;
-	this.canvas.height = this.level.structure.length * this.increment;
+	this.canvas.width = this.level.width * this.increment;
+	this.canvas.height = this.level.height * this.increment;
 
 	var that = this;
 	var img = new Image();
-	var timer;
 	img.src = 'block.png';
 	
 	window.addEventListener('keydown', function(event) {
 		
 		switch (event.keyCode) {
 			case 37:
-				if(that.level.checkInBoundsLeft() &&
-					!that.level.isObstructedLeft()){
+				if(!that.level.isObstructedLeft()){
 					that.level.active.left -= 1;
-					clearTimeout(timer);
-					timer = setTimeout ( that.dropLoop, (500 - (that.levelNumber * 10)));	
 				}				
 				break;
 			case 38:
 				that.level.active.rotate('cw');
-				if(!that.level.checkInBoundsRight()){
-					that.level.active.left =
-						(that.level.structure[0].length - that.level.active.structure[0].length);	
+
+				if(that.level.active.left + that.level.active.width >= that.level.width){
+					that.level.active.left = (that.level.width - that.level.active.width);
 				}
-				if(!that.level.checkInBoundsBottom()){
-					that.level.active.top =
-						(that.level.structure.length - that.level.active.structure.length);	
-				}
+
 				break;
 			case 39:
-				if(that.level.checkInBoundsRight() &&
-					!that.level.isObstructedRight()){
+				if(!that.level.isObstructedRight()){
 					that.level.active.left += 1;
-					clearTimeout(timer);
-					timer = setTimeout ( that.dropLoop, (500 - (that.levelNumber * 10)));
 				}				
 				break;
 			case 40:
-				if(that.level.checkInBoundsBottom() &&
-					!that.level.isObstructedBottom()){
+				if(!that.level.isObstructedBottom()){
 					that.level.active.top += 1;
 				}				
 				break;
@@ -251,8 +234,8 @@ var game = function(canvas, level, score, time){
 		var i, j, x = that.increment;	
 		
 		context.fillStyle = that.level.active.color;	
-		for (i = 0; i < that.level.active.structure.length; ++i){
-			for (j = 0; j < that.level.active.structure[i].length; ++j){
+		for (i = 0; i < that.level.active.height; ++i){
+			for (j = 0; j < that.level.active.width; ++j){
 				if(that.level.active.structure[i][j] === 1){
 					context.fillRect(
 						(j + that.level.active.left) * x,
@@ -289,7 +272,7 @@ var game = function(canvas, level, score, time){
 	
 	this.dropLoop = function(){
 		
-		if(!that.level.checkInBoundsBottom() || that.level.isObstructedBottom()){
+		if(that.level.isObstructedBottom()){
 			if(that.level.active.top < 0){
 				that.status = "stop";
 				console.log("game over");
@@ -324,13 +307,13 @@ var game = function(canvas, level, score, time){
 		that.level.clearRows(fullRows);
 
 		if( that.status !== "stop" ){
-			timer = setTimeout ( that.dropLoop, (500 - (that.levelNumber * 10)));
+			setTimeout ( that.dropLoop, (500 - (that.levelNumber * 10)));
 		}		
 	}
 	
 	this.renderLoop = function(){
 	
-		context.clearRect(0, 0, that.level.structure[0].length * that.increment, that.level.structure.length * that.increment);
+		context.clearRect(0, 0, that.level.width * that.increment, that.level.height * that.increment);
 		context.fillStyle = "rgb(0, 31, 0)";
 		that.drawActive();
 		that.drawLevel();
