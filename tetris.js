@@ -1,3 +1,13 @@
+Object.prototype.clone = function() {
+  var newObj = (this instanceof Array) ? [] : {};
+  for (i in this) {
+    if (i == 'clone') continue;
+    if (this[i] && typeof this[i] == "object") {
+      newObj[i] = this[i].clone();
+    } else newObj[i] = this[i]
+  } return newObj;
+};
+
 var piece = function(structure, color, top, left){	
 	
 	var structure = structure || [[1]];
@@ -8,7 +18,7 @@ var piece = function(structure, color, top, left){
 	var color = color || '#000000';
 
 	this.getStructure = function(){
-		return structure.slice(0); // Return copy
+		return structure.clone();
 	}
 
 	this.getTop = function() {
@@ -67,18 +77,12 @@ var piece = function(structure, color, top, left){
 
 var level = function(width, height, p){
 	
-	this.structure = new Array(height);
-	this.width = width;
-	this.height = height;
-
-	
+	var structure = new Array(height);
+	var width = width;
+	var height = height;	
 	var i;
-	
-	for (i = 0; i < height; ++i){
-		this.structure[i] = new Array(width);
-	}
-	
-	this.createPiece = function(){
+		
+	var createPiece = function(){
 
 		var left = Math.floor(width/2);
 		var num = Math.floor(Math.random()*7);
@@ -108,22 +112,67 @@ var level = function(width, height, p){
 				break;
 		}
 	}
-	
-	this.active = p || this.createPiece();	
+
+	var active = p || createPiece();
+
+	for (i = 0; i < height; ++i){
+		structure[i] = new Array(width);
+	}
+
+	this.getWidth = function() {
+		return structure[0].length;
+	}
+
+	this.getHeight = function() {
+		return structure.length;
+	}
+
+	this.getStructure = function(){
+		return structure.clone();
+	}
+
+	this.moveActiveLeft = function() {
+		if(!this.isObstructedLeft()){
+			active.moveLeft();
+		}
+	}
+
+	this.moveActiveRight = function() {
+		if(!this.isObstructedRight()){
+			active.moveRight();	
+		}
+	}
+
+	this.dropActive= function() {
+		if(!this.isObstructedBottom()){
+			active.drop();
+		}		
+	}
+
+	this.rotateActive = function() {
+		active.rotate('cw');
+		if(active.getLeft() + active.getWidth() >= width){
+			active.setLeft(width - active.getWidth());
+		}
+	}
+
+	this.getActive = function() {
+		return active.clone();
+	}
 
 	this.isObstructedLeft = function(){
-		if(this.active.getLeft() <= 0){
+		if(active.getLeft() <= 0){
 			return true;
 		}
 
-		var pieceStructure = this.active.getStructure();
+		var pieceStructure = active.getStructure();
 
-		for(i = 0; i < this.active.getHeight(); i++){
-			for(j = 0; j < this.active.getWidth(); j++){
+		for(i = 0; i < active.getHeight(); i++){
+			for(j = 0; j < active.getWidth(); j++){
 				if(pieceStructure[i][j] === 1){
-					var top = this.active.getTop();
+					var top = active.getTop();
 					if(top < 0) top = 0;
-					if(this.structure[top + i][this.active.getLeft() +j -1] != undefined){
+					if(structure[top + i][active.getLeft() +j -1] != undefined){
 						return true;
 					}
 					break;
@@ -134,18 +183,18 @@ var level = function(width, height, p){
 	}
 
 	this.isObstructedRight = function(){
-		if(this.active.getLeft() + this.active.getWidth() >= width){
+		if(active.getLeft() + active.getWidth() >= width){
 			return true;
 		}
 
-		var pieceStructure = this.active.getStructure();
+		var pieceStructure = active.getStructure();
 
-		for(i = 0; i < this.active.getHeight(); i++){
-			for(j = (this.active.getWidth() -1); j >= 0; j--){
+		for(i = 0; i < active.getHeight(); i++){
+			for(j = (active.getWidth() -1); j >= 0; j--){
 				if(pieceStructure[i][j] === 1){
-					var top = this.active.getTop();
+					var top = active.getTop();
 					if(top < 0) top = 0;
-					if(this.structure[top + i][this.active.getLeft() + j + 1] != undefined){
+					if(structure[top + i][active.getLeft() + j + 1] != undefined){
 						return true;
 					}
 					break;
@@ -156,18 +205,18 @@ var level = function(width, height, p){
 	}
 
 	this.isObstructedBottom = function(){
-		var j, nextRow, pieceStructure = this.active.getStructure();
-		for (i = (this.active.getHeight() - 1); i >= 0; i--){
-			nextRow = 1 + i + this.active.getTop();
+		var j, nextRow, pieceStructure = active.getStructure();
+		for (i = (active.getHeight() - 1); i >= 0; i--){
+			nextRow = 1 + i + active.getTop();
 			if(nextRow >= height){
 				return true;
 			}
 			if(nextRow < 0){
 				break;
 			}
-			for(j = 0; j <= (this.active.getWidth() -1); j++){
+			for(j = 0; j <= (active.getWidth() -1); j++){
 				if(pieceStructure[i][j] === 1){
-					if(this.structure[nextRow][this.active.getLeft() + j] != undefined){
+					if(structure[nextRow][active.getLeft() + j] != undefined){
 						return true;
 					}
 				}
@@ -177,23 +226,24 @@ var level = function(width, height, p){
 	}
 
 	this.placeActive = function(){
-		var j, pieceStructure = this.active.getStructure();
-		for(i = 0; i < this.active.getHeight(); ++i){
-			for (j = 0; j < this.active.getWidth(); ++j){
+		var j, pieceStructure = active.getStructure();
+		for(i = 0; i < active.getHeight(); ++i){
+			for (j = 0; j < active.getWidth(); ++j){
 				if(pieceStructure[i][j] == 1){
-					if((i + this.active.getTop()) >= 0){
-						this.structure[i + this.active.getTop()][j + this.active.getLeft()] = this.active.getColor();
+					if((i + active.getTop()) >= 0){
+						structure[i + active.getTop()][j + active.getLeft()] = active.getColor();
 					}	
 				}
 			}
 		}
+		active = createPiece();
 	}
 
 	this.getFullRows = function(){
 		var j, result = [];
 		for(i = 0; i < height; i++){
 			for(j = 0; j < width; j++){
-				if(this.structure[i][j] === undefined){
+				if(structure[i][j] === undefined){
 					break;
 				}else if(j === (width -1)){
 					result.push(i);
@@ -205,8 +255,8 @@ var level = function(width, height, p){
 
 	this.clearRows = function(rows){
 		for(i=0; i < rows.length; i++){
-			this.structure.splice(rows[i],1);
-			this.structure.unshift(new Array(width))
+			structure.splice(rows[i],1);
+			structure.unshift(new Array(width))
 		}	
 	}
 }
@@ -221,8 +271,8 @@ var game = function(canvas, level, score, time){
 	this.time = time || 100;
 	this.status = "play";
 	this.increment = 20;
-	this.canvas.width = this.level.width * this.increment;
-	this.canvas.height = this.level.height * this.increment;
+	this.canvas.width = this.level.getWidth() * this.increment;
+	this.canvas.height = this.level.getHeight() * this.increment;
 
 	var that = this;
 	var img = new Image();
@@ -232,27 +282,16 @@ var game = function(canvas, level, score, time){
 		
 		switch (event.keyCode) {
 			case 37:
-				if(!that.level.isObstructedLeft()){
-					that.level.active.moveLeft();
-				}				
+				that.level.moveActiveLeft();			
 				break;
 			case 38:
-				that.level.active.rotate('cw');
-
-				if(that.level.active.getLeft() + that.level.active.getWidth() >= that.level.width){
-					that.level.active.setLeft(that.level.width - that.level.active.getWidth());
-				}
-
+				that.level.rotateActive();
 				break;
 			case 39:
-				if(!that.level.isObstructedRight()){
-					that.level.active.moveRight();
-				}				
+				that.level.moveActiveRight();				
 				break;
 			case 40:
-				if(!that.level.isObstructedBottom()){
-					that.level.active.drop();
-				}				
+				that.level.dropActive();		
 				break;
 			case 19:
 				that.pause();		
@@ -275,32 +314,39 @@ var game = function(canvas, level, score, time){
 	}
 	
 	this.drawActive = function(){		
-		var i, j, x = that.increment, structure = that.level.active.getStructure();	
-		
-		context.fillStyle = that.level.active.getColor();	
-		for (i = 0; i < that.level.active.getHeight(); ++i){
-			for (j = 0; j < that.level.active.getWidth(); ++j){
-				if(structure[i][j] === 1){
+		var i, j, x = that.increment,
+			piece = that.level.getActive(),
+			pieceStructure,
+			pieceLeft,
+			pieceTop;
+
+		pieceStructure = piece.getStructure();
+		pieceLeft = piece.getLeft()
+		pieceTop = piece.getTop();
+		context.fillStyle = piece.getColor();
+
+		for (i = 0; i < piece.getHeight(); ++i){
+			for (j = 0; j < piece.getWidth(); ++j){
+				if(pieceStructure[i][j] === 1){
 					context.fillRect(
-						(j + that.level.active.getLeft()) * x,
-						(i + that.level.active.getTop()) * x,
+						(j + pieceLeft) * x,
+						(i + pieceTop) * x,
 						x, x
 					);
 					context.drawImage(img,
-						(j + that.level.active.getLeft()) * x,
-						(i + that.level.active.getTop()) * x);
+						(j + pieceLeft) * x,
+						(i + pieceTop) * x);
 				}
 			}
 		}
 	}
 
 	this.drawLevel = function(){
-		var i, j, x = that.increment;
-
-		for (i = 0; i < that.level.structure.length; ++i){
-			for (j = 0; j < that.level.structure[i].length; ++j){
-				if(that.level.structure[i][j] != undefined ){
-					context.fillStyle = that.level.structure[i][j];
+		var i, j, x = that.increment, levelStructure = that.level.getStructure();
+		for (i = 0; i < that.level.getHeight(); ++i){
+			for (j = 0; j < that.level.getWidth(); ++j){
+				if(levelStructure[i][j] != undefined ){
+					context.fillStyle = levelStructure[i][j];
 					context.fillRect(
 						(j * x),
 						(i * x),
@@ -316,14 +362,14 @@ var game = function(canvas, level, score, time){
 	
 	this.dropLoop = function(){
 		if(that.level.isObstructedBottom()){
-			if(that.level.active.getTop() < 0){
+			var piece = that.level.getActive();
+			if(piece.getTop() < 0){
 				that.status = "stop";
 				console.log("game over");
 			}
 			that.level.placeActive();
-			that.level.active = that.level.createPiece();
 		}else{
-			that.level.active.drop();	
+			that.level.dropActive();	
 		}
 
 		var fullRows = that.level.getFullRows();
@@ -355,8 +401,7 @@ var game = function(canvas, level, score, time){
 	}
 	
 	this.renderLoop = function(){
-	
-		context.clearRect(0, 0, that.level.width * that.increment, that.level.height * that.increment);
+		context.clearRect(0, 0, that.level.getWidth() * that.increment, that.level.getHeight() * that.increment);
 		context.fillStyle = "rgb(0, 31, 0)";
 		that.drawActive();
 		that.drawLevel();
