@@ -293,10 +293,10 @@ var game = function(canvas, level, score, time){
 				level.dropActive();		
 				break;
 			case 19:
-				this.pause();		
+				pause();		
 				break;
 			case 80:
-				this.pause();		
+				pause();		
 				break;
 		}
 		
@@ -311,6 +311,8 @@ var game = function(canvas, level, score, time){
 			dropLoop();
 		}
 	}
+
+	var pause = this.pause;
 	
 	var drawActive = function(){		
 		var i, j, x = increment,
@@ -390,6 +392,8 @@ var game = function(canvas, level, score, time){
 		}
 
 		document.getElementById("score").innerHTML = score;
+		document.getElementById("level-number").innerHTML = levelNumber;
+
 		linesCleared += fullRows.length;
 		levelNumber = Math.floor(linesCleared/10);
 		level.clearRows(fullRows);
