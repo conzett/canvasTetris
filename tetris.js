@@ -263,59 +263,58 @@ var level = function(width, height, p){
 
 var game = function(canvas, level, score, time){
 	
-	this.canvas = canvas || document.getElementById('level');
-	this.level = level || new level(8, 16);
-	this.levelNumber = 0;
-	this.linesCleared = 0;
-	this.score = score || 0;
-	this.time = time || 100;
-	this.status = "play";
-	this.increment = 20;
-	this.canvas.width = this.level.getWidth() * this.increment;
-	this.canvas.height = this.level.getHeight() * this.increment;
+	var canvas = canvas || document.getElementById('level'),
+		level = level || new level(8, 16),
+		levelNumber = 0,
+		linesCleared = 0,
+		score = score || 0,
+		time = time || 100,
+		status = "play",
+		increment = 20,
+		img = new Image();
 
-	var that = this;
-	var img = new Image();
+	canvas.width = (level.getWidth() * increment);
+	canvas.height = (level.getHeight() * increment);
 	img.src = 'block.png';
 	
 	window.addEventListener('keydown', function(event) {
 		
 		switch (event.keyCode) {
 			case 37:
-				that.level.moveActiveLeft();			
+				level.moveActiveLeft();			
 				break;
 			case 38:
-				that.level.rotateActive();
+				level.rotateActive();
 				break;
 			case 39:
-				that.level.moveActiveRight();				
+				level.moveActiveRight();				
 				break;
 			case 40:
-				that.level.dropActive();		
+				level.dropActive();		
 				break;
 			case 19:
-				that.pause();		
+				this.pause();		
 				break;
 			case 80:
-				that.pause();		
+				this.pause();		
 				break;
 		}
 		
 	}, false );
 
 	this.pause = function() {
-		if(that.status === "play"){
-					that.status = "stop";
-				}else{
-					that.status = "play";
-					that.renderLoop();
-					that.dropLoop();
+		if(status === "play"){
+			status = "stop";
+		}else{
+			status = "play";
+			renderLoop();
+			dropLoop();
 		}
 	}
 	
-	this.drawActive = function(){		
-		var i, j, x = that.increment,
-			piece = that.level.getActive(),
+	var drawActive = function(){		
+		var i, j, x = increment,
+			piece = level.getActive(),
 			pieceStructure,
 			pieceLeft,
 			pieceTop;
@@ -341,10 +340,10 @@ var game = function(canvas, level, score, time){
 		}
 	}
 
-	this.drawLevel = function(){
-		var i, j, x = that.increment, levelStructure = that.level.getStructure();
-		for (i = 0; i < that.level.getHeight(); ++i){
-			for (j = 0; j < that.level.getWidth(); ++j){
+	var drawLevel = function(){
+		var i, j, x = increment, levelStructure = level.getStructure();
+		for (i = 0; i < level.getHeight(); ++i){
+			for (j = 0; j < level.getWidth(); ++j){
 				if(levelStructure[i][j] != undefined ){
 					context.fillStyle = levelStructure[i][j];
 					context.fillRect(
@@ -360,61 +359,60 @@ var game = function(canvas, level, score, time){
 		}
 	}
 	
-	this.dropLoop = function(){
-		if(that.level.isObstructedBottom()){
-			var piece = that.level.getActive();
+	var dropLoop = function(){
+		if(level.isObstructedBottom()){
+			var piece = level.getActive();
 			if(piece.getTop() < 0){
-				that.status = "stop";
+				status = "stop";
 				console.log("game over");
 			}
-			that.level.placeActive();
+			level.placeActive();
 		}else{
-			that.level.dropActive();	
+			level.dropActive();	
 		}
 
-		var fullRows = that.level.getFullRows();
+		var fullRows = level.getFullRows();
 
 		switch(fullRows.length)
 		{
 		case 1:
-			that.score += (40*(that.levelNumber +1));
+			score += (40*(levelNumber +1));
 			break;
 		case 2:
-			that.score += (100*(that.levelNumber +1));
+			score += (100*(levelNumber +1));
 			break;
 		case 3:
-			that.score += (300*(that.levelNumber +1));
+			score += (300*(levelNumber +1));
 			break;
 		case 4:
-			that.score += (1200*(that.levelNumber +1));
+			score += (1200*(levelNumber +1));
 			break;
 		}
 
-		document.getElementById("score").innerHTML = that.score;
-		that.linesCleared += fullRows.length;
-		that.levelNumber = Math.floor(that.linesCleared/10);
-		that.level.clearRows(fullRows);
+		document.getElementById("score").innerHTML = score;
+		linesCleared += fullRows.length;
+		levelNumber = Math.floor(linesCleared/10);
+		level.clearRows(fullRows);
 
-		if( that.status !== "stop" ){
-			setTimeout ( that.dropLoop, (500 - (that.levelNumber * 10)));
+		if( status !== "stop" ){
+			setTimeout ( dropLoop, (500 - (levelNumber * 10)));
 		}		
 	}
 	
-	this.renderLoop = function(){
-		context.clearRect(0, 0, that.level.getWidth() * that.increment, that.level.getHeight() * that.increment);
+	var renderLoop = function(){
+		context.clearRect(0, 0, level.getWidth() * increment, level.getHeight() * increment);
 		context.fillStyle = "rgb(0, 31, 0)";
-		that.drawActive();
-		that.drawLevel();
-		if( that.status !== "stop" ){
-			that.fps ++;
-			setTimeout ( that.renderLoop, 40);
+		drawActive();
+		drawLevel();
+		if( status !== "stop" ){
+			setTimeout ( renderLoop, 40);
 		}
 	}
 	
-	if (this.canvas.getContext) {
-		var context = this.canvas.getContext('2d');
-		this.renderLoop();
-		this.dropLoop();
+	if (canvas.getContext) {
+		var context = canvas.getContext('2d');
+		renderLoop();
+		dropLoop();
 	} else {
 		//insert warning about not supported canvas
 	}
