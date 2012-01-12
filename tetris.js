@@ -427,7 +427,7 @@ var game = function(canvas, level, score, time){
 		drawLevel();
 		fps +=1;
 		if( status !== "stop" ){
-			setTimeout ( renderLoop, 16);
+			setTimeout ( renderLoop, 32);
 		}
 	}
 
