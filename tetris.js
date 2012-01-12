@@ -271,6 +271,9 @@ var game = function(canvas, level, score, time){
 		time = time || 100,
 		status = "play",
 		increment = 20,
+		fullRows = new Array(),
+		flash = true,
+		fps = 0,
 		img = new Image();
 
 	canvas.width = (level.getWidth() * increment);
@@ -309,6 +312,7 @@ var game = function(canvas, level, score, time){
 			status = "play";
 			renderLoop();
 			dropLoop();
+			fpsLoop();
 		}
 	}
 
@@ -343,19 +347,32 @@ var game = function(canvas, level, score, time){
 	}
 
 	var drawLevel = function(){
-		var i, j, x = increment, levelStructure = level.getStructure();
+		var i, j, k, clear, x = increment, levelStructure = level.getStructure();
+
+		if(flash){
+			flash = false;
+		}else{
+			flash = true;
+		}
+
 		for (i = 0; i < level.getHeight(); ++i){
+			clear = false;
+			for (k = 0; k < fullRows.length; k++){
+				if(i === fullRows[k]){
+					clear = true;
+				}
+			}
 			for (j = 0; j < level.getWidth(); ++j){
 				if(levelStructure[i][j] != undefined ){
-					context.fillStyle = levelStructure[i][j];
-					context.fillRect(
-						(j * x),
-						(i * x),
-						x, x
-					);
-					context.drawImage(img,
-						j * x,
-						i * x);
+					if(clear && flash){
+						context.fillStyle = "#ffffff";
+					}else{
+						context.fillStyle = levelStructure[i][j];
+					}
+					context.fillRect((j * x), (i * x), x, x);
+					if((clear && !flash) || !clear){
+						context.drawImage(img, j * x, i * x);
+					}
 				}
 			}
 		}
@@ -373,7 +390,14 @@ var game = function(canvas, level, score, time){
 			level.dropActive();	
 		}
 
-		var fullRows = level.getFullRows();
+		linesCleared += fullRows.length;
+		levelNumber = Math.floor(linesCleared/10);
+		level.clearRows(fullRows);
+
+		document.getElementById("score").innerHTML = score;
+		document.getElementById("level-number").innerHTML = levelNumber;
+
+		fullRows = level.getFullRows();
 
 		switch(fullRows.length)
 		{
@@ -391,15 +415,8 @@ var game = function(canvas, level, score, time){
 			break;
 		}
 
-		document.getElementById("score").innerHTML = score;
-		document.getElementById("level-number").innerHTML = levelNumber;
-
-		linesCleared += fullRows.length;
-		levelNumber = Math.floor(linesCleared/10);
-		level.clearRows(fullRows);
-
 		if( status !== "stop" ){
-			setTimeout ( dropLoop, (500 - (levelNumber * 10)));
+			setTimeout ( dropLoop, (500 - (levelNumber * 15)));
 		}		
 	}
 	
@@ -408,14 +425,24 @@ var game = function(canvas, level, score, time){
 		context.fillStyle = "rgb(0, 31, 0)";
 		drawActive();
 		drawLevel();
+		fps +=1;
 		if( status !== "stop" ){
-			setTimeout ( renderLoop, 40);
+			setTimeout ( renderLoop, 16);
+		}
+	}
+
+	var fpsLoop = function() {
+		document.getElementById("fps").innerHTML = fps;		
+		if( status !== "stop" ){
+			fps = 0;
+			setTimeout ( fpsLoop, 1000);
 		}
 	}
 	
 	if (canvas.getContext) {
 		var context = canvas.getContext('2d');
 		renderLoop();
+		fpsLoop();
 		dropLoop();
 	} else {
 		//insert warning about not supported canvas
