@@ -11,8 +11,8 @@ Object.prototype.clone = function() {
 var piece = function(structure, color, top, left){	
 	
 	var structure = structure || [[1]];
-	var top = (-1 * structure.length)
-	var left = (left - structure[0].length +1);
+	var top = top || (-1 * structure.length)
+	var left = left || (left - structure[0].length +1);
 	var height = structure.length;
 	var width = structure[0].length;
 	var color = color || '#000000';
@@ -75,9 +75,9 @@ var piece = function(structure, color, top, left){
 	}
 }
 
-var level = function(width, height, p){
+var level = function(structure, width, height, p){
 	
-	var structure = new Array(height);
+	var structure = structure || new Array(height);
 	var width = width;
 	var height = height;	
 	var i;
@@ -264,7 +264,7 @@ var level = function(width, height, p){
 var game = function(canvas, level, score, time){
 	
 	var canvas = canvas || document.getElementById('level'),
-		level = level || new level(8, 16),
+		level = level || new level(null, 8, 16),
 		levelNumber = 0,
 		linesCleared = 0,
 		score = score || 0,
