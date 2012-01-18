@@ -10,12 +10,20 @@ Object.prototype.clone = function() {
 
 var piece = function(structure, color, top, left){	
 	
-	var structure = structure || [[1]];
-	var top = top || (-1 * structure.length)
-	var left = left || (left - structure[0].length +1);
+	structure = structure || [[1]];
+	color = color || '#000000';
+
 	var height = structure.length;
 	var width = structure[0].length;
-	var color = color || '#000000';
+
+
+	if(top === null){
+		top = (-1 * structure.length);
+	}
+
+	if(left === null){
+		left = structure[0].length +1;
+	}	
 
 	this.getStructure = function(){
 		return structure.clone();
@@ -77,10 +85,17 @@ var piece = function(structure, color, top, left){
 
 var level = function(structure, width, height, p){
 	
-	var structure = structure || new Array(height);
-	var width = width;
-	var height = height;	
 	var i;
+
+	if(structure === null || structure === undefined) {
+		structure = new Array(height);
+		for (i = 0; i < height; ++i){
+			structure[i] = new Array(width);
+		}
+	}else {
+		width = structure[0].length;
+		height = structure.length;
+	}	
 		
 	var createPiece = function(){
 
@@ -90,34 +105,30 @@ var level = function(structure, width, height, p){
 		switch(num)
 		{
 			case 0:
-				return new piece([[1],[1],[1],[1]], '#8FEBE9', 0, left);
+				return new piece([[1],[1],[1],[1]], '#8FEBE9', null, left);
 				break;
 			case 1:
-				return new piece([[0,1,1],[1,1,0]], '#3ED936', 0, left);
+				return new piece([[0,1,1],[1,1,0]], '#3ED936', null, (left-2));
 				break;
 			case 2:
-				return new piece([[1,1,0],[0,1,1]], '#F23E22', 0, left);
+				return new piece([[1,1,0],[0,1,1]], '#F23E22', null, (left-2));
 				break;
 			case 3:
-				return new piece([[1,1,1],[0,1,0]], '#B21DCC', 0, left);
+				return new piece([[1,1,1],[0,1,0]], '#B21DCC', null, (left-2));
 				break;
 			case 4:
-				return new piece([[0,1],[0,1],[1,1]], '#194CC2', 0, left);
+				return new piece([[0,1],[0,1],[1,1]], '#194CC2', null, (left-1));
 				break;
 			case 5:
-				return new piece([[1,0],[1,0],[1,1]], '#F2B022', 0, left);
+				return new piece([[1,0],[1,0],[1,1]], '#F2B022', null, (left-1));
 				break;
 			case 6:
-				return new piece([[1,1],[1,1]], '#F2ED50', 0, left);
+				return new piece([[1,1],[1,1]], '#F2ED50', null, (left-1));
 				break;
 		}
 	}
 
 	var active = p || createPiece();
-
-	for (i = 0; i < height; ++i){
-		structure[i] = new Array(width);
-	}
 
 	this.getWidth = function() {
 		return structure[0].length;

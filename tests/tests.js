@@ -46,27 +46,36 @@ $(document).ready(function(){
 
 	test('Test isObstructedLeft function', function() {
 
-		var testPiece = new piece(
-		    [[1,1,1],
-			[0,1,0]],
-			null, 1, 1
+		var testPiece = new piece([	[1,1,1],
+									[0,1,0]],
+									null,
+									0,
+									1
 		);
 
-		var testLevel = new level(null, 5,4, testPiece);	
+		var x = "#336699";
+		var o = undefined;
 
-		testLevel.getStructure()[1][0] = "#336699";		
+		var levelStructure = new Array();
+		levelStructure = [	[x,o,o,o,o],
+							[o,o,o,o,o],
+							[x,o,o,o,o],
+							[o,o,o,o,o]]
+
+		var testLevel = new level(levelStructure, null,null, testPiece);
+	
 		ok(testLevel.isObstructedLeft(), "We expect this location to return true");
 
-		testLevel.getStructure()[1][0] = undefined;		
+		testLevel.dropActive();
 		ok(!testLevel.isObstructedLeft(), "We expect this location to return false");
 
-		testLevel.getStructure()[2][1] = "#336699";		
+		testLevel.dropActive();	
 		ok(testLevel.isObstructedLeft(), "We expect this location to return true");
 
-		testLevel.moveActiveLeft();
+		testLevel.moveActiveRight();
 		equals(testLevel.isObstructedLeft(), false, "0 units to the left, we expect the value to be false");
 		
-		testLevel.moveActiveRight();
+		testLevel.moveActiveLeft();
 		equals(testLevel.isObstructedLeft(), true, "1 units to the left, we expect the value to be true");
 			
 	});
