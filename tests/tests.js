@@ -85,26 +85,30 @@ $(document).ready(function(){
 		var testPiece = new piece(
 		    [[1,1,1],
 			[0,1,0]],
-			null, 1, 1
+			null, 0, 1
 		);
 
-		var testLevel = new level(null, 5,4, testPiece);		
+		var x = "#336699";
+		var o = undefined;
 
-		testLevel.getStructure()[1][4] = "#336699";		
+		var levelStructure = new Array();
+		levelStructure = [	[o,o,o,o,x],
+							[o,o,o,x,o],
+							[o,o,o,o,o],
+							[o,o,o,o,o]]
+
+		var testLevel = new level(levelStructure, null,null, testPiece);		
+	
 		ok(testLevel.isObstructedRight(), "We expect this location to return true");
-		
-		testLevel.getStructure()[1][4] = undefined;		
+
+		testLevel.moveActiveLeft();
+			
 		ok(!testLevel.isObstructedRight(), "We expect this location to return false");
 
-		testLevel.getStructure()[2][3] = "#336699";		
+		testLevel.dropActive();
+		
 		ok(testLevel.isObstructedRight(), "We expect this location to return true");
 
-		var testLevel = new level(null, 6,6, new piece());
-		testLevel.active.left = 5;
-		equals(testLevel.checkInBoundsRight(), false, "6 units to the left, we expect the value to be false");
-		
-		testLevel.active.left = 4;
-		equals(testLevel.checkInBoundsRight(), true, "5 units to the left, we expect the value to be true");
 			
 	});
 
@@ -113,50 +117,50 @@ $(document).ready(function(){
 		var testPiece = new piece(
 		    [[1,1,1],
 			[0,1,0]],
-			null, 1, 1
+			null, 0, 1
 		);
 
-		var testLevel = new level(null, 5,4, testPiece);		
+		var x = "#336699";
+		var o = undefined;
 
-		testLevel.getStructure()[3][2] = "#336699";		
-		ok(testLevel.isObstructedBottom(), "We expect this location to return true");
-		
-		testLevel.getStructure()[3][2] = undefined;		
+		var levelStructure = new Array();
+		levelStructure = [	[o,o,o,o,o],
+							[o,o,o,o,o],
+							[o,o,o,o,o],
+							[o,o,x,o,o]]
+
+		var testLevel = new level(levelStructure, null,null, testPiece);		
+	
 		ok(!testLevel.isObstructedBottom(), "We expect this location to return false");
 
-		testLevel.getStructure()[2][1] = "#336699";		
+		testLevel.dropActive();
+			
 		ok(testLevel.isObstructedBottom(), "We expect this location to return true");
 
-		var testLevel = new level(null, 6,6, new piece());
-		
-		testLevel.active.left = 0;
-		testLevel.active.top = 5;
-		equals(testLevel.checkInBoundsBottom(), false, "6 units from the top, expect the value to be false");
-		
-		testLevel.active.top = 4;
-		equals(testLevel.checkInBoundsBottom(), true, "5 units from the top, expect the value to be true");
+		testLevel.moveActiveLeft();
+			
+		ok(!testLevel.isObstructedBottom(), "We expect this location to return false");
 			
 	});
 
 	test('Test getFullRows function', function() {
 
-		var testLevel = new level(null, 5,5);
+		var x = "#336699";
+		var o = undefined;
+
+		var levelStructure = new Array();
+		levelStructure = [	[o,o,o,o,o],
+							[x,x,x,x,x],
+							[o,o,o,o,o],
+							[x,x,x,x,x]]
+
+		var testLevel = new level(levelStructure, 5,5);
 		var i;
-
-		testLevel.getStructure()[0][2] = "#336699";
-		
-		for(i = 0; i < testLevel.getStructure()[0].length; i++){
-			testLevel.getStructure()[2][i] = "#336699";	
-		}
-
-		for(i = 0; i < testLevel.getStructure()[0].length; i++){
-			testLevel.getStructure()[4][i] = "#336699";	
-		}
 
 		result = testLevel.getFullRows();
 				
-		equals(result[0], 2, "We expect this to equl 2 the index of the first full row");
-		equals(result[1], 4, "We expect this to equl 4 the index of the next full row");
+		equals(result[0], 1, "We expect this to equal 1 the index of the first full row");
+		equals(result[1], 3, "We expect this to equal 3 the index of the next full row");
 			
 	});
 
