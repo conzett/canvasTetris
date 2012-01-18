@@ -295,16 +295,24 @@ var game = function(canvas, level, score, time){
 		
 		switch (event.keyCode) {
 			case 37:
-				level.moveActiveLeft();			
+				if(status == "play"){
+					level.moveActiveLeft();
+				}		
 				break;
 			case 38:
-				level.rotateActive();
+				if(status == "play"){
+					level.rotateActive();
+				}
 				break;
 			case 39:
-				level.moveActiveRight();				
+				if(status == "play"){
+					level.moveActiveRight();
+				}				
 				break;
 			case 40:
-				level.dropActive();		
+				if(status == "play"){
+					level.dropActive();
+				}	
 				break;
 			case 19:
 				pause();		
