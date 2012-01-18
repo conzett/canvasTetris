@@ -383,7 +383,7 @@ var game = function(canvas, level, score, time){
 			var piece = level.getActive();
 			if(piece.getTop() < 0){
 				status = "stop";
-				console.log("game over");
+				document.getElementById('gameover').style.display = 'block'; 
 			}
 			level.placeActive();
 		}else{
@@ -441,10 +441,11 @@ var game = function(canvas, level, score, time){
 	
 	if (canvas.getContext) {
 		var context = canvas.getContext('2d');
+		document.getElementById('gameover').style.display = 'none'; 
 		renderLoop();
 		fpsLoop();
 		dropLoop();
 	} else {
-		//insert warning about not supported canvas
+
 	}
 }
