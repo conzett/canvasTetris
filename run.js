@@ -1,2 +1,2 @@
-var x = new level(null, 16, 32);
-var game = new game(null, x);
+var x = new Level(null, 16, 32);
+var game = new Game(null, x);
