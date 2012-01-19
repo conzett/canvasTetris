@@ -1,4 +1,4 @@
-Object.prototype.clone = function() {
+Object.prototype.clone = function () {
   var newObj = (this instanceof Array) ? [] : {};
   for (i in this) {
     if (i == 'clone') continue;
@@ -17,47 +17,47 @@ var piece = function(structure, color, top, left){
 	var width = structure[0].length;
 
 
-	if(top === null){
+	if (top === null) {
 		top = (-1 * structure.length);
 	}
 
-	if(left === null){
+	if (left === null) {
 		left = structure[0].length +1;
 	}	
 
-	this.getStructure = function(){
+	this.getStructure = function () {
 		return structure.clone();
 	}
 
-	this.getTop = function() {
+	this.getTop = function () {
 		return top;
 	}
 
-	this.getLeft = function() {
+	this.getLeft = function () {
 		return left;
 	}
 
-	this.getWidth = function() {
+	this.getWidth = function () {
 		return structure[0].length;
 	}
 
-	this.getHeight = function() {
+	this.getHeight = function () {
 		return structure.length;
 	}
 
-	this.getColor = function() {
+	this.getColor = function () {
 		return color;
 	}
 
-	this.drop = function() {
+	this.drop = function () {
 		top = top + 1;
 	}
 
-	this.moveLeft = function() {
+	this.moveLeft = function () {
 		left = left - 1;
 	}
 
-	this.moveRight = function() {
+	this.moveRight = function () {
 		left = left + 1;
 	}
 
@@ -97,7 +97,7 @@ var level = function(structure, width, height, p){
 		height = structure.length;
 	}	
 		
-	var createPiece = function(){
+	var createPiece = function () {
 
 		var left = Math.floor(width/2);
 		var num = Math.floor(Math.random()*7);
@@ -130,48 +130,48 @@ var level = function(structure, width, height, p){
 
 	var active = p || createPiece();
 
-	this.getWidth = function() {
+	this.getWidth = function () {
 		return structure[0].length;
 	}
 
-	this.getHeight = function() {
+	this.getHeight = function () {
 		return structure.length;
 	}
 
-	this.getStructure = function(){
+	this.getStructure = function () {
 		return structure.clone();
 	}
 
-	this.moveActiveLeft = function() {
+	this.moveActiveLeft = function () {
 		if(!this.isObstructedLeft()){
 			active.moveLeft();
 		}
 	}
 
-	this.moveActiveRight = function() {
+	this.moveActiveRight = function () {
 		if(!this.isObstructedRight()){
 			active.moveRight();	
 		}
 	}
 
-	this.dropActive= function() {
+	this.dropActive= function () {
 		if(!this.isObstructedBottom()){
 			active.drop();
 		}		
 	}
 
-	this.rotateActive = function() {
+	this.rotateActive = function () {
 		active.rotate('cw');
 		if(active.getLeft() + active.getWidth() >= width){
 			active.setLeft(width - active.getWidth());
 		}
 	}
 
-	this.getActive = function() {
+	this.getActive = function () {
 		return active.clone();
 	}
 
-	this.isObstructedLeft = function(){
+	this.isObstructedLeft = function () {
 		if(active.getLeft() <= 0){
 			return true;
 		}
@@ -193,7 +193,7 @@ var level = function(structure, width, height, p){
 		return false;		
 	}
 
-	this.isObstructedRight = function(){
+	this.isObstructedRight = function () {
 		if(active.getLeft() + active.getWidth() >= width){
 			return true;
 		}
@@ -215,7 +215,7 @@ var level = function(structure, width, height, p){
 		return false;		
 	}
 
-	this.isObstructedBottom = function(){
+	this.isObstructedBottom = function () {
 		var j, nextRow, pieceStructure = active.getStructure();
 		for (i = (active.getHeight() - 1); i >= 0; i--){
 			nextRow = 1 + i + active.getTop();
@@ -236,7 +236,7 @@ var level = function(structure, width, height, p){
 		return false;	
 	}
 
-	this.placeActive = function(){
+	this.placeActive = function () {
 		var j, pieceStructure = active.getStructure();
 		for(i = 0; i < active.getHeight(); ++i){
 			for (j = 0; j < active.getWidth(); ++j){
@@ -250,7 +250,7 @@ var level = function(structure, width, height, p){
 		active = createPiece();
 	}
 
-	this.getFullRows = function(){
+	this.getFullRows = function () {
 		var j, result = [];
 		for(i = 0; i < height; i++){
 			for(j = 0; j < width; j++){
@@ -324,7 +324,7 @@ var game = function(canvas, level, score, time){
 		
 	}, false );
 
-	this.pause = function() {
+	this.pause = function () {
 		if(status === "play"){
 			status = "stop";
 		}else{
@@ -337,7 +337,7 @@ var game = function(canvas, level, score, time){
 
 	var pause = this.pause;
 	
-	var drawActive = function(){		
+	var drawActive = function () {		
 		var i, j, x = increment,
 			piece = level.getActive(),
 			pieceStructure,
@@ -365,7 +365,7 @@ var game = function(canvas, level, score, time){
 		}
 	}
 
-	var drawLevel = function(){
+	var drawLevel = function () {
 		var i, j, k, clear, x = increment, levelStructure = level.getStructure();
 
 		if(flash){
@@ -397,15 +397,23 @@ var game = function(canvas, level, score, time){
 		}
 	}
 	
-	var dropLoop = function(){
-		if(level.isObstructedBottom()){
+	var dropLoop = function () {
+
+		var gameOverElement,
+			scoreElement,
+			levelNumberElement;
+
+		if (level.isObstructedBottom()) {
 			var piece = level.getActive();
-			if(piece.getTop() < 0){
+			if (piece.getTop() < 0) {
 				status = "stop";
-				document.getElementById('gameover').style.display = 'block'; 
+				gameover = document.getElementById('gameover');
+				if (gameover) {
+					gameover.style.display = 'block';
+				}
 			}
 			level.placeActive();
-		}else{
+		} else {
 			level.dropActive();	
 		}
 
@@ -413,8 +421,16 @@ var game = function(canvas, level, score, time){
 		levelNumber = Math.floor(linesCleared/10);
 		level.clearRows(fullRows);
 
-		document.getElementById("score").innerHTML = score;
-		document.getElementById("level-number").innerHTML = levelNumber;
+		scoreElement = document.getElementById("score");
+		levelNumberElement = document.getElementById("level-number");
+
+		if (scoreElement) {
+			scoreElement.innerHTML = score;
+		}
+
+		if (levelNumberElement) {
+			levelNumberElement.innerHTML = levelNumber;
+		}
 
 		fullRows = level.getFullRows();
 
@@ -439,7 +455,7 @@ var game = function(canvas, level, score, time){
 		}		
 	}
 	
-	var renderLoop = function(){
+	var renderLoop = function () {
 		context.clearRect(0, 0, level.getWidth() * increment, level.getHeight() * increment);
 		context.fillStyle = "rgb(0, 31, 0)";
 		drawActive();
@@ -450,17 +466,27 @@ var game = function(canvas, level, score, time){
 		}
 	}
 
-	var fpsLoop = function() {
-		document.getElementById("fps").innerHTML = fps;		
-		if( status !== "stop" ){
+	var fpsLoop = function () {
+		var fpsElement = document.getElementById("fps");
+		
+		if (fpsElement) {
+			fpsElement.innerHTML = fps;
+		}
+				
+		if ( status !== "stop" ){
 			fps = 0;
 			setTimeout ( fpsLoop, 1000);
 		}
 	}
 	
 	if (canvas.getContext) {
-		var context = canvas.getContext('2d');
-		document.getElementById('gameover').style.display = 'none'; 
+		var context = canvas.getContext('2d'),
+			gameOverElement = document.getElementById('gameover');
+
+		if (gameOverElement) {
+			gameOverElement.style.display = 'none'; 
+		}
+
 		renderLoop();
 		fpsLoop();
 		dropLoop();
