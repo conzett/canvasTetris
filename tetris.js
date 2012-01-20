@@ -289,7 +289,7 @@ var Level = function (structure, width, height, p) {
 	};
 };
 
-var Game = function (canvas, level, score, time) {
+var Game = function (canvas, level, score) {
 	'use strict';
 	var	levelNumber = 0,
 		linesCleared = 0,
@@ -313,7 +313,6 @@ var Game = function (canvas, level, score, time) {
 	canvas.width = (level.getWidth() * increment);
 	canvas.height = (level.getHeight() * increment);
 	score = score || 0;
-	time = time || 100;
 	img.src = 'block.png';
 
 	window.addEventListener('keydown', function (event) {
