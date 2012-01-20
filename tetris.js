@@ -282,9 +282,14 @@ var Level = function (structure, width, height, p) {
 	};
 
 	this.clearRows = function (rows) {
+		var newRow = [],
+			j;
 		for (i = 0; i < rows.length; i += 1) {
 			structure.splice(rows[i], 1);
-			structure.unshift([]);
+			for (j = 0; j < width; j += 1) {
+				newRow.push(undefined);
+			}
+			structure.unshift(newRow);
 		}
 	};
 };

@@ -71,3 +71,11 @@ The example above created a new 16 x 32 level with all the options set to their 
 	var game = new game(null, l);
 
 You can create any custom level you want as long as you make sure to set the empty spaces to `undefined` and the occupied level spaces to a color in hex.
+
+##Controls
+
+- __Up arrow__ : Rotate Piece
+- __Down arrow__ : Drop faster
+- __Left arrow__ : Move piece left
+- __Right arrow__ : Move piece right
+- __p__ or __Pause__ : Pause game
