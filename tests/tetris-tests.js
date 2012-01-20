@@ -2,12 +2,12 @@ $(document).ready(function(){
 
 	module("Level Module", {
 		setup: function() {
-			this.level = new level();
+			this.level = new Level();
 		}
 	});	
 
 	test("Test level array creation", function() {
-		var testLevel = new level(null, 6,6);	
+		var testLevel = new Level(null, 6,6);	
 		equals(testLevel.getStructure()[5][5], undefined, "We expect the array location to exist, undefined" );		
 	});
 	
@@ -26,12 +26,12 @@ $(document).ready(function(){
 
 		var color = "#336699";
 
-		var testPiece = new piece(
+		var testPiece = new Piece(
 		    [[1,1,1],
 			[0,1,0]], color, 2, 2
 		);
 
-		var testLevel = new level(null, 5,4, testPiece);		
+		var testLevel = new Level(null, 5,4, testPiece);		
 
 		testLevel.placeActive();
 
@@ -46,7 +46,7 @@ $(document).ready(function(){
 
 	test('Test isObstructedLeft function', function() {
 
-		var testPiece = new piece([	[1,1,1],
+		var testPiece = new Piece([	[1,1,1],
 									[0,1,0]],
 									null,
 									0,
@@ -62,7 +62,7 @@ $(document).ready(function(){
 							[x,o,o,o,o],
 							[o,o,o,o,o]]
 
-		var testLevel = new level(levelStructure, null,null, testPiece);
+		var testLevel = new Level(levelStructure, null,null, testPiece);
 	
 		ok(testLevel.isObstructedLeft(), "We expect this location to return true");
 
@@ -82,7 +82,7 @@ $(document).ready(function(){
 
 	test('Test isObstructedRight function', function() {
 
-		var testPiece = new piece(
+		var testPiece = new Piece(
 		    [[1,1,1],
 			[0,1,0]],
 			null, 0, 1
@@ -97,7 +97,7 @@ $(document).ready(function(){
 							[o,o,o,o,o],
 							[o,o,o,o,o]]
 
-		var testLevel = new level(levelStructure, null,null, testPiece);		
+		var testLevel = new Level(levelStructure, null,null, testPiece);		
 	
 		ok(testLevel.isObstructedRight(), "We expect this location to return true");
 
@@ -114,7 +114,7 @@ $(document).ready(function(){
 
 	test('Test isObstructedBottom function', function() {
 
-		var testPiece = new piece(
+		var testPiece = new Piece(
 		    [[1,1,1],
 			[0,1,0]],
 			null, 0, 1
@@ -129,7 +129,7 @@ $(document).ready(function(){
 							[o,o,o,o,o],
 							[o,o,x,o,o]]
 
-		var testLevel = new level(levelStructure, null,null, testPiece);		
+		var testLevel = new Level(levelStructure, null,null, testPiece);		
 	
 		ok(!testLevel.isObstructedBottom(), "We expect this location to return false");
 
@@ -154,7 +154,7 @@ $(document).ready(function(){
 							[o,o,o,o,o],
 							[x,x,x,x,x]]
 
-		var testLevel = new level(levelStructure, 5,5);
+		var testLevel = new Level(levelStructure, 5,5);
 		var i;
 
 		result = testLevel.getFullRows();
@@ -166,7 +166,7 @@ $(document).ready(function(){
 
 	test('Test clearRows function', function() {
 
-		var testLevel = new level(null, 5,5);
+		var testLevel = new Level(null, 5,5);
 		var i;
 		
 		for(i = 0; i < testLevel.getStructure()[0].length; i++){
@@ -189,12 +189,12 @@ $(document).ready(function(){
 	});	
 
 	test("Test piece array creation", function() {
-		var testPiece = new piece([[true, true], [true, true]]);	
+		var testPiece = new Piece([[true, true], [true, true]]);	
 		equals(testPiece.getStructure()[1][1], true, "We expect the array location to be true" );		
 	});
 	
 	test('Test piece rotate counter-clock-wise', function() {
-		var testPiece = new piece([[true, false], [false, true]]);
+		var testPiece = new Piece([[true, false], [false, true]]);
 		testPiece.rotate('ccw');
 		equals(testPiece.getStructure()[0][0], false, "We expect this location to be false" );
 		equals(testPiece.getStructure()[0][1], true, "We expect this location to be true" );
@@ -203,16 +203,10 @@ $(document).ready(function(){
 	});
 	
 	test('Test "T-piece" rotate clock-wise', function() {
-		var testPiece = new piece(
+		var testPiece = new Piece(
 		       [[1,1,1],
 			[0,1,0]]
 		);
-		
-		/* Expected Result
-		  
-		[[0,1],
-		 [1,1],
-		 [0,1]] */
 		
 		testPiece.rotate('cw');
 		
