@@ -27,6 +27,11 @@
     pre { background: #000; color: #fff; padding: 15px;}
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
+
+    #tests {
+      width : 100%;
+      height : 500px;
+    }
   </style>
 </head>
 
@@ -46,36 +51,333 @@
       <span class="small">by <a href="https://github.com/conzett">conzett</a></span></h1>
 
     <div class="description">
-      Simple "Tetris-style" falling block game implemented in plain old JavaScript and <canvas/>
+      Tetris implemented in JavaScript and HTML canvas
     </div>
 
-    
-      <p>Main Project Text</p>
-    
+    <h2>Overview</h2>
 
-    
-      <h2>Dependencies</h2>
-      <p>Dependencies listed jere</p>
-    
+<p>
+Canvas Tetris was an attempt to reproduce the famous brick-dropping game in JavaScript and 
+<code>
+canvas
+</code>
+ using test-driven modular development from start to finish. Each component had tests written for it first and were then implemented and refactored incrementally.
+</p>
 
-    
-      <h2>Install</h2>
-      <p>Installation instructions here</p>
-    
+<p>
+OOP JavaScript practices were used throughout, with private members exposed via getters and setters. Components observe Demeters Law, and the dependency injection pattern is applied to all the game to allow easy mocking of objects for tests.
+</p>
 
-    
-      <h2>License</h2>
-      <p>License here</p>
-    
+<h2>Demo</h2>
 
-    
+<p><a href="canvasTetris/example.html">Canvas Tetris Demo</a></p>
+
+<h2>
+Controls
+</h2>
+
+<ul>
+
+<li>
+
+<strong>
+Up arrow
+</strong>
+ : Rotate Piece
+</li>
+
+<li>
+
+<strong>
+Down arrow
+</strong>
+ : Drop faster
+</li>
+
+<li>
+
+<strong>
+Left arrow
+</strong>
+ : Move piece left
+</li>
+
+<li>
+
+<strong>
+Right arrow
+</strong>
+ : Move piece right
+</li>
+
+<li>
+
+<strong>
+p
+</strong>
+ or 
+<strong>
+Pause
+</strong>
+ : Pause game
+</li>
+
+</ul>
+
+<h2>
+Game Objects
+</h2>
+
+<h3>
+Piece
+</h3>
+
+<p>
+Arguments
+</p>
+
+<ul>
+
+<li>
+
+<strong>
+structure
+</strong>
+ : A multidimensional array that makes up the piece. Default is  
+<code>
+[[1]]
+</code>
+
+</li>
+
+<li>
+
+<strong>
+color
+</strong>
+ : The color, in hex, of the piece. Default is 
+<code>
+
+<a href='http://github.com/mojombo/god/issues/#issue/000000'>
+#000000
+</a>
+
+</code>
+
+</li>
+
+<li>
+
+<strong>
+top
+</strong>
+ : Integer representing units from the top of the level. Default is the negative height of the piece
+</li>
+
+<li>
+
+<strong>
+left
+</strong>
+ : Integer representing units from the left side of the level. Default is the length of the piece
+</li>
+
+</ul>
+
+<h3>
+Level
+</h3>
+
+<p>
+Arguments
+</p>
+
+<ul>
+
+<li>
+
+<strong>
+structure
+</strong>
+ : A multidimensional array that makes up the level. If 
+<code>
+null
+</code>
+ it will use the width and height arguments
+</li>
+
+<li>
+
+<strong>
+width
+</strong>
+ : Optional integer specifying the width of the level in lieu of a literal structure
+</li>
+
+<li>
+
+<strong>
+height
+</strong>
+ : Optional integer specifying the height of the level in lieu of a literal structure
+</li>
+
+<li>
+
+<strong>
+piece
+</strong>
+ : The default active piece. If null or undefined one will be generated randomly
+</li>
+
+</ul>
+
+<h3>
+Game
+</h3>
+
+<p>
+Arguments
+</p>
+
+<ul>
+
+<li>
+
+<strong>
+canvas
+</strong>
+ : The canvas DOM element that will be used
+</li>
+
+<li>
+
+<strong>
+level
+</strong>
+ : A vlid level object
+</li>
+
+<li>
+
+<strong>
+score
+</strong>
+ : An integer that is the the starting score
+</li>
+
+</ul>
+
+<h2>
+Creating a Game
+</h2>
+
+<p>
+Provide a basic HTML structure that includes a canvas element and optionally a level counter, a score counter, a "game over" element and an FPS counter:
+</p>
+
+<pre>
+
+<code>
+&lt;canvas id="level"&gt;&lt;/canvas&gt;
+&lt;div id="gameover"&gt;Game Over&lt;/div&gt;
+&lt;div id="game-info"&gt;
+    &lt;p&gt;Score: &lt;span id="score"&gt;&lt;/span&gt;&lt;/p&gt;
+    &lt;p&gt;Level: &lt;span id="level-number"&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p id="fps-info"&gt;FPS: &lt;span id="fps"&gt;&lt;/span&gt;&lt;/p&gt;
+
+</code>
+
+</pre>
+
+<p>
+With the basic structure in place, simply include the tetris.js file, and initialize a game using your desired options
+</p>
+
+<pre>
+
+<code>
+&lt;script type="text/javascript"&gt;
+    var x = new Level(null, 16, 32);
+    var game = new Game(null, x);
+&lt;/script&gt;
+
+</code>
+
+</pre>
+
+<p>
+The example above created a new 16 x 32 level with all the options set to their defaults. For extra fun you can create custom levels and pass them to the game. The following example creates pink text pieces that say "coming soon" that interacts with the Tetris pieces:
+</p>
+
+<pre>
+
+<code>
+var structure = [];
+var x = "#ee3c96";
+var o = undefined;
+
+structure = [
+    [o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,x,o,o,o,o,o,o,o,o,o],
+    [o,x,x,o,o,x,x,o,o,x,x,x,o,x,o,o,o,o,x,x,o,o,o,x,x,x],
+    [x,o,o,o,x,o,o,x,o,x,o,o,x,o,x,o,x,o,x,o,x,o,x,o,o,x],
+    [x,o,o,o,x,o,o,x,o,x,o,o,x,o,x,o,x,o,x,o,x,o,x,o,o,x],
+    [o,x,x,o,o,x,x,o,o,x,o,o,x,o,x,o,x,o,x,o,x,o,o,x,x,x],
+    [o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,o,x],
+    [o,o,o,o,o,x,x,o,o,x,x,o,o,o,x,x,o,o,x,x,o,o,o,x,x,o],
+    [o,o,o,o,x,o,o,o,x,o,o,x,o,x,o,o,x,o,x,o,x,o,o,o,o,o],
+    [o,o,o,o,o,o,x,o,x,o,o,x,o,x,o,o,x,o,x,o,x,o,o,o,o,o],
+    [o,o,o,o,x,x,o,o,o,x,x,o,o,o,x,x,o,o,x,o,x,o,o,o,o,o]
+]
+
+var l = new level(structure);
+var game = new game(null, l);
+
+</code>
+
+</pre>
+
+<p>
+You can create any custom level you want as long as you make sure to set the empty spaces to 
+<code>
+undefined
+</code>
+ and the occupied level spaces to a color in hex.
+</p>
+
+<h2>Tests</h2>
+
+<iframe id="tests" src="canvasTetris/tests/test-runner.html"></iframe>
+
+<h2>
+Browser Compatibility
+</h2>
+
+<p>
+Should work in all major modern browsers, guessing older versions of IE (8 and below) will not due to key binding issues as well as not natively supporting canvas.
+</p>
+
+<h2>
+License
+</h2>
+
+<p>
+GNU GPL Version 3 
+<a href='http://www.gnu.org/copyleft/gpl.html'>
+http://www.gnu.org/copyleft/gpl.html
+</a>
+
+</p>    
       <h2>Authors</h2>
-      <p>Graham Conzett (conzett@gmail.com)<br/>      </p>
+      <p>Graham Conzett (conzett@gmail.com)
+<br/>      </p>
     
 
     
       <h2>Contact</h2>
-      <p>Graham Conzett (conzett@gmail.com)<br/>      </p>
+      <p>Graham Conzett (conzett@gmail.com)
+<br/>      </p>
     
 
     <h2>Download</h2>
