@@ -1,14 +1,17 @@
 <!doctype html>
 <html>
 	<head>	
-		<title>Tetris</title>
+		<title>Canvas Tetris</title>
+		<link rel="stylesheet" type="text/css" href="example.css">
 	</head>
 	<body>
-		<canvas style="background: lightGray" id="level"></canvas>
-		<span id="gameover">Game Over</span>
-		<span>Score: <span id="score"></span></span>
-		<span>Level: <span id="level-number"></span></span>
-		<span>FPS: <span id="fps"></span></span>
+		<canvas id="level"></canvas>
+		<div id="gameover">Game Over</div>
+		<div id="game-info">
+			<p>Score: <span id="score"></span></p>
+			<p>Level: <span id="level-number"></span></p>
+		</div>
+		<p id="fps-info">FPS: <span id="fps"></span></p>
 	</body>
 	<script src="tetris.js"></script>
 	<script type="text/javascript">

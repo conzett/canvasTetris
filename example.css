@@ -1,0 +1,45 @@
+body {
+	padding : 10px;
+}
+
+canvas {
+	background-color : lightGray;
+	float : left;
+	margin-bottom : 10px;
+}
+
+p {
+	margin : 0;
+}
+
+#game-info, #fps-info, #gameover {
+	color : gray;
+	font-family : Helvetica, Arial, sans-serif;
+	font-size : 12px;
+}
+
+#game-info {
+	float : left;
+	margin-left : 10px;
+	text-align : right;
+}
+
+#fps-info {
+	clear : left;
+}
+
+#gameover {
+	position : absolute;
+	top : 300px;
+	left : 138px;
+	background-color : white;
+	padding: 15px;
+
+	-webkit-box-shadow: 0px 3px 12px 3px #666666;
+	-moz-box-shadow: 0px 3px 12px 3px #666666;
+	box-shadow: 0px 3px 12px 3px #666666;
+
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+}
