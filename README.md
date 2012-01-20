@@ -4,6 +4,14 @@ Canvas Tetris was an attempt to reproduce the famous brick-dropping game in Java
 
 OOP JavaScript practices were used throughout, with private members exposed via getters and setters. Components observe Demeters Law, and the dependency injection pattern is applied to all the game to allow easy mocking of objects for tests.
 
+##Controls
+
+- __Up arrow__ : Rotate Piece
+- __Down arrow__ : Drop faster
+- __Left arrow__ : Move piece left
+- __Right arrow__ : Move piece right
+- __p__ or __Pause__ : Pause game
+
 ##Game Objects
 
 ###Piece
@@ -72,10 +80,10 @@ The example above created a new 16 x 32 level with all the options set to their 
 
 You can create any custom level you want as long as you make sure to set the empty spaces to `undefined` and the occupied level spaces to a color in hex.
 
-##Controls
+##Browser Compatibility
 
-- __Up arrow__ : Rotate Piece
-- __Down arrow__ : Drop faster
-- __Left arrow__ : Move piece left
-- __Right arrow__ : Move piece right
-- __p__ or __Pause__ : Pause game
+Should work in all major modern browsers, guessing older versions of IE (8 and below) will not due to key binding issues as well as not natively supporting canvas.
+
+##License
+
+GNU GPL Version 3 http://www.gnu.org/copyleft/gpl.html
