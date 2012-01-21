@@ -311,7 +311,8 @@ var Game = function (canvas, level, score) {
 		renderLoop,
 		fpsLoop,
 		context,
-		gameOverElement;
+		gameOverElement,
+		tempPiece;
 
 	canvas = canvas || document.getElementById('level');
 	level = level || new Level(null, 8, 16);
@@ -324,12 +325,12 @@ var Game = function (canvas, level, score) {
 		switch (event.keyCode) {
 		case 37:
 			if (status === "play") {
-				level.moveActiveLeft();
+				level.moveActiveLeft();					
 			}
 			break;
 		case 38:
-			if (status === "play") {
-				level.rotateActive();
+			if (status === "play" && !level.isObstructedBottom()) {				
+				level.rotateActive();				
 			}
 			break;
 		case 39:
